@@ -1,5 +1,6 @@
 import 'package:binko/core/constants/assets.dart';
 import 'package:binko/core/extensions/context_extensions.dart';
+import 'package:binko/core/extensions/validation.dart';
 import 'package:binko/core/extensions/widget_extensions.dart';
 import 'package:binko/core/widgets/main_button.dart';
 import 'package:binko/core/widgets/main_text_field.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../../../main/presentation/pages/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -43,6 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 label: 'E-mail',
                 hint: 'example@mail.com',
                 controller: emailController,
+                validator: (p0) => p0?.isValidEmail() ?? false
+                    ? null
+                    : 'Please Add A Valid Email',
               ),
               20.verticalSpace,
               MainTextField(
@@ -50,9 +56,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 hint: '*******',
                 isPassword: true,
                 controller: passwordController,
+                validator: (p0) => p0?.isValidPassword() ?? false
+                    ? null
+                    : 'Please Add A Valid Password',
               ),
               20.verticalSpace,
-              MainButton(text: 'Login', onPressed: () {}),
+              MainButton(
+                  text: 'Login',
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainScreen(),
+                        ));
+                  }),
               20.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -3,6 +3,7 @@ import 'package:binko/core/constants/assets.dart';
 import 'package:binko/core/cubit/theme_cubit.dart';
 import 'package:binko/core/extensions/context_extensions.dart';
 import 'package:binko/core/services/dependecies.dart';
+import 'package:binko/features/on_boarding/presentation/about_us_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -12,7 +13,6 @@ import 'package:page_transition/page_transition.dart';
 
 import 'core/services/shared_preferences_service.dart';
 import 'core/utils/theme/light/light_theme.dart';
-import 'features/on_boarding/presentation/on_boarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -117,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       context,
                       PageTransition(
                         type: PageTransitionType.theme,
-                        child: OnBoardingScreen(),
+                        child: AboutUsScreen(),
                       ),
                     );
                   });

@@ -55,7 +55,8 @@ class MainButton extends StatelessWidget {
           ),
         ),
         padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-        backgroundColor: WidgetStatePropertyAll(color ?? Colors.yellowAccent),
+        backgroundColor: WidgetStatePropertyAll(
+            color ?? context.theme.colorScheme.onInverseSurface),
         elevation: WidgetStatePropertyAll(eleavation ?? 1),
         fixedSize: WidgetStateProperty.all(
           Size(

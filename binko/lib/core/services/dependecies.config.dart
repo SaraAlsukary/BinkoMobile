@@ -12,6 +12,7 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/main/presentation/cubit/main_cubit.dart' as _i552;
 import '../cubit/theme_cubit.dart' as _i319;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -26,6 +27,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.lazySingleton<_i319.ThemeCubit>(() => _i319.ThemeCubit());
+    gh.lazySingleton<_i552.MainCubit>(() => _i552.MainCubit());
     return this;
   }
 }

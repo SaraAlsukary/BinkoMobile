@@ -1,3 +1,4 @@
+import 'package:binko/core/constants/assets.dart';
 import 'package:binko/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +19,6 @@ class BookWidget extends StatelessWidget {
             context, MaterialPageRoute(builder: (context) => DetailsScreen()));
       },
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Card(
@@ -27,7 +27,10 @@ class BookWidget extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Placeholder(),
+              child: Image.asset(
+                Assets.assetsImgsBooksAshin,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           2.verticalSpace,
