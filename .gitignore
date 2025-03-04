@@ -1,1 +1,5 @@
 /Back/replies
+/Back/.env
+/Back/*/__pycache__
+__pycache__
+/Back/account/__pycache__
