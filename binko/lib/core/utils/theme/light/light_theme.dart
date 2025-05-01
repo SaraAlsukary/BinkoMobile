@@ -8,20 +8,20 @@ class MaterialTheme {
   static ColorScheme lightScheme() {
     return const ColorScheme(
         brightness: Brightness.light,
-        primary: Color(0xff8afa81),
-        surfaceTint: Color(0xff8afa81),
+        primary: Color.fromARGB(255, 29, 175, 18),
+        surfaceTint: Color.fromARGB(255, 29, 175, 18),
         onPrimary: Color(0xffffffff),
         primaryContainer: Color(0xffffffff),
         onPrimaryContainer: Color(0xff2f1800),
-        secondary: Color(0xff8afa81),
+        secondary: Color.fromARGB(255, 29, 175, 18),
         onSecondary: Color(0xffffffff),
         secondaryContainer: Color(0xffffffff),
         onSecondaryContainer: Color(0xff2f1800),
-        tertiary: Color(0xff8afa81),
+        tertiary: Color.fromARGB(255, 29, 175, 18),
         onTertiary: Color(0xffffffff),
         tertiaryContainer: Color(0xffffffff),
         onTertiaryContainer: Color(0xff2f1800),
-        error: Color(0xff810034),
+        error: Color(0xffb32d56),
         onError: Color(0xffffffff),
         errorContainer: Color(0xffb32d56),
         onErrorContainer: Color(0xffffffff),
@@ -53,7 +53,7 @@ class MaterialTheme {
         surfaceContainer: Color(0xfff1edec),
         surfaceContainerHigh: Color(0xffF0F0F0),
         surfaceContainerHighest: Color(0xffe5e2e1),
-        onInverseSurface: Color(0xffe9e902));
+        onInverseSurface: Color.fromARGB(255, 182, 182, 23));
   }
 
   ThemeData light() {
@@ -63,21 +63,21 @@ class MaterialTheme {
   static ColorScheme darkScheme() {
     return const ColorScheme(
       brightness: Brightness.dark,
-      onInverseSurface: Color(0xffe9e902),
-      primary: Color(0xff8afa81),
-      surfaceTint: Color(0xff8afa81),
+      onInverseSurface: Color.fromARGB(255, 182, 182, 23),
+      primary: Color.fromARGB(255, 29, 175, 18),
+      surfaceTint: Color.fromARGB(255, 29, 175, 18),
       onPrimary: Color(0xffffffff),
       primaryContainer: Color(0xff2f1800),
       onPrimaryContainer: Color(0xffffffff),
-      secondary: Color(0xff8afa81),
+      secondary: Color.fromARGB(255, 29, 175, 18),
       onSecondary: Color(0xff232323),
       secondaryContainer: Color(0xff232323),
       onSecondaryContainer: Color(0xffffffff),
-      tertiary: Color(0xff8afa81),
+      tertiary: Color.fromARGB(255, 29, 175, 18),
       onTertiary: Color(0xff232323),
       tertiaryContainer: Color(0xff232323),
       onTertiaryContainer: Color(0xff232323),
-      error: Color(0xff810034),
+      error: Color(0xffb32d56),
       onError: Color(0xffffffff),
       errorContainer: Color(0xffb32d56),
       onErrorContainer: Color(0xffffffff),

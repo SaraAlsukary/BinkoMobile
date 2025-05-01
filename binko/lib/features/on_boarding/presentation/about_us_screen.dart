@@ -1,9 +1,10 @@
-import 'package:binko/core/constants/assets.dart';
-import 'package:binko/core/extensions/context_extensions.dart';
-import 'package:binko/core/widgets/main_button.dart';
-import 'package:binko/features/on_boarding/presentation/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../core/constants/assets.dart';
+import '../../../core/extensions/context_extensions.dart';
+import '../../../core/widgets/main_button.dart';
+import 'on_boarding_screen.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
@@ -50,7 +51,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   MainButton(
                       color: context.primaryColor,
-                      text: 'Start Journy',
+                      text: 'Start Journey',
                       fontSize: 24,
                       fontFamily: 'LoveYa',
                       onPressed: () {

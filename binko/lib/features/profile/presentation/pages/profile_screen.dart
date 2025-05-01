@@ -1,8 +1,17 @@
-import 'package:binko/core/extensions/context_extensions.dart';
-import 'package:binko/core/widgets/main_button.dart';
-import 'package:binko/core/widgets/main_text_field.dart';
+import 'package:binko/core/constants/assets.dart';
+import 'package:binko/core/extensions/widget_extensions.dart';
+import 'package:binko/core/unified_api/api_variables.dart';
+import 'package:binko/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/services/dependecies.dart';
+import '../../../../core/widgets/main_button.dart';
+import '../../../../core/widgets/main_text_field.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../bloc/profile_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
@@ -21,24 +30,37 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Expanded(
                 flex: 4,
-                child: Container(
-                  width: .50.sw,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(),
-                  ),
-                  alignment: Alignment.center,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(),
-                    ),
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      '+',
-                      style: context.textTheme.titleLarge,
-                    ),
-                  ),
+                child: BlocBuilder<AuthBloc, AuthState>(
+                  bloc: getIt<AuthBloc>(),
+                  builder: (context, state) {
+                    return Container(
+                      width: .50.sw,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(),
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      alignment: Alignment.center,
+                      child: state.user?.image != null
+                          ? Image.network(
+                              ApiVariables().imageUrl(state.user!.image!),
+                              fit: BoxFit.cover,
+                              width: .5.sw,
+                              height: .5.sw,
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                '+',
+                                style: context.textTheme.titleLarge,
+                              ),
+                            ),
+                    );
+                  },
                 )),
             Expanded(
                 flex: 5,
@@ -61,35 +83,115 @@ class ProfileScreen extends StatelessWidget {
                         ]),
                     Expanded(
                       child: TabBarView(children: [
-                        Container(
-                          padding: EdgeInsets.all(25),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MainTextField(
-                                label: 'Bio',
+                        BlocConsumer<AuthBloc, AuthState>(
+                          bloc: getIt<AuthBloc>(),
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            var bioController = TextEditingController(
+                                text: state.user?.discriptions);
+                            var userController =
+                                TextEditingController(text: state.user?.name);
+                            return Container(
+                              padding: EdgeInsets.all(25),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  MainTextField(
+                                    label: 'Bio',
+                                    controller: bioController,
+                                  ),
+                                  20.verticalSpace,
+                                  MainTextField(
+                                    label: 'User Name',
+                                    controller: userController,
+                                  ),
+                                  20.verticalSpace,
+                                  MainButton(
+                                      text: 'Change',
+                                      onPressed: () {
+                                        getIt<AuthBloc>().add(
+                                            UpdateProfileEvent(
+                                                name: userController.text,
+                                                description: bioController.text,
+                                                image: ''));
+                                      }),
+                                  10.verticalSpace,
+                                  Center(
+                                    child: MainButton(
+                                        borderColor: context.primaryColor,
+                                        textColor: context.primaryColor,
+                                        color: context.scaffoldBackgroundColor,
+                                        hasBorder: true,
+                                        onPressed: () {
+                                          getIt<AuthBloc>().add(LogoutEvent());
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation,
+                                                      secondaryAnimation) =>
+                                                  FadeTransition(
+                                                opacity: animation,
+                                                child: SplashScreen(),
+                                              ),
+                                            ),
+                                            (route) => false,
+                                          );
+                                        },
+                                        text: 'Log Out'),
+                                  )
+                                ],
                               ),
-                              20.verticalSpace,
-                              MainTextField(
-                                label: 'User Name',
-                              ),
-                              20.verticalSpace,
-                              MainButton(text: 'Change', onPressed: () {}),
-                              10.verticalSpace,
-                              Center(
-                                child: MainButton(
-                                    borderColor: context.primaryColor,
-                                    textColor: context.primaryColor,
-                                    color: context.scaffoldBackgroundColor,
-                                    hasBorder: true,
-                                    onPressed: () {},
-                                    text: 'Log Out'),
-                              )
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                        SizedBox(),
+                        BlocBuilder<ProfileBloc, ProfileState>(
+                          bloc: getIt<ProfileBloc>(),
+                          builder: (context, state) {
+                            return state.favoredBooks.isEmpty
+                                ? Center(
+                                    child: Text('No Favored Books'),
+                                  )
+                                : ListView.builder(
+                                    itemCount: state.favoredBooks.length,
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListTile(
+                                        leading: Container(
+                                          padding: EdgeInsets.all(1),
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          height: 120,
+                                          width: 60,
+                                          child: Image.network(
+                                            state.favoredBooks[index].image ??
+                                                '',
+                                            errorBuilder:
+                                                (context, error, stackTrace) =>
+                                                    Image.asset(
+                                                        Assets.assetsImgsLogo),
+                                          ),
+                                        ),
+                                        title: Text(
+                                          state.favoredBooks[index].name ?? '',
+                                          style: context.textTheme.titleMedium,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.bookmark_remove_outlined,
+                                          color: Colors.red,
+                                        ).onTap(() {
+                                          getIt<ProfileBloc>().add(
+                                              DeleteFromFavroed(
+                                                  id: state.favoredBooks[index]
+                                                      .id!));
+                                        }),
+                                      ),
+                                    ),
+                                  );
+                          },
+                        ),
                         SizedBox(),
                       ]),
                     )

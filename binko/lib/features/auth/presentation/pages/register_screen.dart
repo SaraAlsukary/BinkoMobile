@@ -1,15 +1,17 @@
-import 'package:binko/core/constants/assets.dart';
-import 'package:binko/core/extensions/context_extensions.dart';
-import 'package:binko/core/extensions/validation.dart';
-import 'package:binko/core/extensions/widget_extensions.dart';
-import 'package:binko/core/widgets/main_button.dart';
-import 'package:binko/core/widgets/main_text_field.dart';
-import 'package:binko/features/auth/presentation/pages/login_screen.dart';
-import 'package:binko/features/main/presentation/pages/main_screen.dart';
+import 'package:binko/core/services/dependecies.dart';
+import 'package:binko/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../../../../core/constants/assets.dart';
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/extensions/validation.dart';
+import '../../../../core/extensions/widget_extensions.dart';
+import '../../../../core/widgets/main_button.dart';
+import '../../../../core/widgets/main_text_field.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -82,11 +84,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   text: 'Register',
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainScreen(),
-                          ));
+                      getIt<AuthBloc>().add(CreateUserEvent(
+                          name: nameController.text,
+                          username: emailController.text,
+                          password: passwordController.text,
+                          confirmPassword: confirmPasswordController.text));
                     }
                   }),
               20.verticalSpace,

@@ -1,10 +1,12 @@
-import 'package:binko/core/constants/assets.dart';
-import 'package:binko/core/extensions/context_extensions.dart';
-import 'package:binko/features/auth/presentation/pages/register_screen.dart';
+import 'package:binko/core/services/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../../../core/constants/assets.dart';
+import '../../../core/extensions/context_extensions.dart';
+import '../../auth/presentation/pages/register_screen.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -19,7 +21,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     return IntroductionScreen(
       initialPage: 0,
       showDoneButton: true,
-      onDone: () {
+      onDone: () async {
+        await SharedPreferencesService.storeFirstTimeQoutation();
         Navigator.pushReplacement(
             context,
             PageTransition(

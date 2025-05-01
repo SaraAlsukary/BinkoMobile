@@ -6,3 +6,17 @@ abstract class ProfileEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetFavoredBooks extends ProfileEvent {}
+
+class AddToFavroed extends ProfileEvent {
+  final BooksModel booksModel;
+
+  const AddToFavroed({required this.booksModel});
+}
+
+class DeleteFromFavroed extends ProfileEvent {
+  final int id;
+
+  const DeleteFromFavroed({required this.id});
+}

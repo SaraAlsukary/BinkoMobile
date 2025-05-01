@@ -20,7 +20,7 @@ dependencies:
   flutter_svg: ^2.0.17
   smooth_page_indicator: ^1.2.0+3
   equatable: ^2.0.7
-  flutter_widget_from_html: ^0.15.3
+  flutter_widget_from_html: ^0.16.0
   cached_network_image: ^3.4.1
   awesome_notifications: ^0.10.0
   collection: ^1.19.0
@@ -33,20 +33,32 @@ dependencies:
   introduction_screen: ^3.1.14
   animated_theme_switcher: ^2.0.10
   curved_navigation_bar: ^1.0.6
+  freezed_annotation: ^3.0.0
+  flutter_3d_controller: ^2.1.0
+  hydrated_bloc: ^10.0.0
+  json_annotation: ^4.9.0
+  path_provider: ^2.1.5
+  page_flip: ^0.2.3
+  skeletonizer: ^1.4.3
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^5.0.0
-  build_runner: ^2.4.14
+  build_runner: ^2.4.15
   injectable_generator: ^2.7.0
+  freezed: ^3.0.4
+  json_serializable: ^6.9.4
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/imgs/
     - assets/imgs/books/
     - assets/svgs/
+    - assets/translations/
     - assets/lottieFiles/
   fonts:
     - family: Leckerli

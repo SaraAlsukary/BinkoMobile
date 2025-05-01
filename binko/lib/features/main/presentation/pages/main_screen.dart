@@ -1,14 +1,15 @@
-import 'package:binko/core/constants/assets.dart';
-import 'package:binko/core/extensions/context_extensions.dart';
-import 'package:binko/core/extensions/string_parser.dart';
-import 'package:binko/features/home/presentation/pages/home_screen.dart';
-import 'package:binko/features/main/presentation/cubit/main_cubit.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/constants/assets.dart';
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/extensions/string_parser.dart';
 import '../../../../core/services/dependecies.dart';
+import '../../../../core/widgets/main_text_field.dart';
+import '../../../home/presentation/pages/home_screen.dart';
 import '../../../profile/presentation/pages/profile_screen.dart';
+import '../cubit/main_cubit.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -23,33 +24,60 @@ class MainScreen extends StatelessWidget {
             index: state.currentIndex,
             children: [
               HomeScreen(),
-              Scaffold(
-                appBar: AppBar(
-                  title: Text('Search Screen'),
-                ),
-              ),
-              Scaffold(
-                appBar: AppBar(
-                  title: Text('Bookmarks Screen'),
-                ),
-              ),
               ProfileScreen(),
             ],
           ),
-          bottomNavigationBar: CurvedNavigationBar(
-              index: state.currentIndex,
+          bottomNavigationBar: BottomNavigationBar(
+              currentIndex: state.currentIndex,
               onTap: (value) => getIt<MainCubit>().changeIndex(value),
-              color: context.primaryColor,
+              fixedColor: context.primaryColor,
               backgroundColor: context.scaffoldBackgroundColor,
-              buttonBackgroundColor: context.theme.colorScheme.onInverseSurface,
               items: [
-                Assets.assetsSvgsHome.toSvg(),
-                Assets.assetsSvgsSearch.toSvg(),
-                Assets.assetsSvgsBookMark.toSvg(),
-                Icon(Icons.person)
+                BottomNavigationBarItem(
+                    icon: Assets.assetsSvgsHome.toSvg(), label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: 'Profile')
               ]),
         );
       },
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Search Screen'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          children: [
+            MainTextField(
+              prefixIcon: Assets.assetsSvgsSearch.toSvg(),
+            ),
+            20.verticalSpace,
+            Expanded(
+                child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: 10,
+              itemBuilder: (context, index) => ListTile(
+                leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(Assets.assetsImgsBooksAshin)),
+                title: Text('The Song of Ice And Fire'),
+                subtitle: Text('George R.R Martin'),
+              ),
+            ))
+          ],
+        ),
+      ),
     );
   }
 }
