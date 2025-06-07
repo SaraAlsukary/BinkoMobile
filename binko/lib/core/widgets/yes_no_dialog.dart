@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -61,7 +62,7 @@ class YesNoDialog extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          noTitle ?? "No",
+                          noTitle ?? 'dialog.no'.tr(),
                           style: context.textTheme.titleSmall!
                               .copyWith(color: context.primaryColor),
                         ),
@@ -82,7 +83,7 @@ class YesNoDialog extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          yesTitle ?? "Yes",
+                          yesTitle ?? 'dialog.yes'.tr(),
                           style: context.textTheme.titleSmall!
                               .copyWith(color: context.scaffoldBackgroundColor),
                         ),

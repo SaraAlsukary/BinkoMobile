@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -60,7 +61,7 @@ class DropDownWidget<T> extends StatelessWidget {
                       selectedItemBuilder: selectedItemBuilder,
                       dropdownColor: context.theme.colorScheme.surface,
                       hint: Text(
-                        hint ?? 'Select',
+                        hint ?? 'form.select'.tr(),
                         style: context.textTheme.labelSmall?.copyWith(
                             color:
                                 enabled! ? null : context.theme.highlightColor),

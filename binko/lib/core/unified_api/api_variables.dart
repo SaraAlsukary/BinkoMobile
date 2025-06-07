@@ -3,7 +3,7 @@ class ApiVariables {
   ///General///
   /////////////
   final _scheme = 'http';
-  final _host = '192.168.1.103';
+  final _host = '10.0.2.2';
   final _port = 8000;
 
   String _imageUrl({
@@ -45,6 +45,7 @@ class ApiVariables {
   Uri deleteFavored(int id, int userId) =>
       _mainUri(path: 'book-favs/$userId/$id/');
   Uri getLikes(int id) => _mainUri(path: 'books/$id/likes/');
+  Uri getAllComments() => _mainUri(path: 'getallcomment/');
   Uri getBookChapters(int id) => _mainUri(path: 'books/$id/chapters');
   Uri getFavoredBooks(int id) => _mainUri(path: 'favorite-books/$id/');
   Uri addToFavored() => _mainUri(path: 'add-favorite/');

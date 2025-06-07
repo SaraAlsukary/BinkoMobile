@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class FlutterSwitch extends StatefulWidget {
@@ -433,7 +434,7 @@ class _FlutterSwitchState extends State<FlutterSwitch>
   Widget get _activeText {
     if (widget.showOnOff) {
       return Text(
-        widget.activeText ?? "On",
+        widget.activeText ?? 'switch.on'.tr(),
         style: TextStyle(
           color: widget.activeTextColor,
           fontWeight: _activeTextFontWeight,
@@ -448,7 +449,7 @@ class _FlutterSwitchState extends State<FlutterSwitch>
   Widget get _inactiveText {
     if (widget.showOnOff) {
       return Text(
-        widget.inactiveText ?? "Off",
+        widget.inactiveText ?? 'switch.off'.tr(),
         style: TextStyle(
           color: widget.inactiveTextColor,
           fontWeight: _inactiveTextFontWeight,

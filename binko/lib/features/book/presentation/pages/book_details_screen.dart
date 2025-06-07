@@ -112,12 +112,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ),
                   10.verticalSpace,
                   Text(
-                    widget.book.author?.name ?? 'George R.R Martin',
+                    widget.book.author?.name ?? 'book.author'.tr(),
                     style: context.textTheme.titleSmall,
                   ),
                   10.verticalSpace,
                   Text(
-                    'Publish Date:${DateFormat('yyyy-MM-dd').format(widget.book.pubDat!)}',
+                    '${'book.publish_date'.tr()}: ${DateFormat('yyyy-MM-dd').format(widget.book.pubDat!)}',
                     style: context.textTheme.titleSmall,
                   ),
                   10.verticalSpace,
@@ -128,7 +128,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         bloc: getIt<BookBloc>(),
                         builder: (context, state) {
                           return Text(
-                            '${state.likesCount} Like',
+                            '${'book.likes'.tr()} ${state.likesCount}',
                             style: context.textTheme.titleMedium,
                           );
                         },
@@ -216,7 +216,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           decoration: BoxDecoration(border: Border.all()),
                           child: Row(
                             children: [
-                              Text('Read'),
+                              Text('book.read'.tr()),
                               10.horizontalSpace,
                               Assets.assetsSvgsRead.toSvg(
                                   color: ColorFilter.mode(
@@ -235,33 +235,47 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Text(
-                        'Book Summary',
+                        'book.summary'.tr(),
                         style: context.textTheme.titleMedium
                             ?.copyWith(color: Colors.white),
                       )),
                   25.verticalSpace,
                   Text(
-                    widget.book.description ??
-                        'Veniam cupidatat incididunt adipisicing consequat irure eiusmod. Anim veniam incididunt dolor aliquip tempor consectetur proident. Ad irure excepteur commodo amet officia deserunt id reprehenderit ut fugiat ullamco velit laboris.',
+                    widget.book.description ?? 'book.default_description'.tr(),
                     maxLines: 6,
                     textAlign: TextAlign.justify,
                   ),
                   25.verticalSpace,
-                  Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: context.primaryColor,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        'Comments',
-                        style: context.textTheme.titleMedium
-                            ?.copyWith(color: Colors.white),
-                      )),
+                  Row(
+                    children: [
+                      Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: context.primaryColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text(
+                            'book.comments'.tr(),
+                            style: context.textTheme.titleMedium
+                                ?.copyWith(color: Colors.white),
+                          )),
+                      Spacer(),
+                      Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: context.primaryColor.withAlpha(80),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text(
+                            'book.add_comment'.tr(),
+                            style: context.textTheme.titleMedium
+                                ?.copyWith(color: Colors.white),
+                          )),
+                    ],
+                  ),
                   25.verticalSpace,
                   Text(
-                    widget.book.description ??
-                        'Veniam cupidatat incididunt adipisicing consequat irure eiusmod. Anim veniam incididunt dolor aliquip tempor consectetur proident. Ad irure excepteur commodo amet officia deserunt id reprehenderit ut fugiat ullamco velit laboris.',
+                    widget.book.description ?? 'book.default_description'.tr(),
                     maxLines: 6,
                     textAlign: TextAlign.justify,
                   )

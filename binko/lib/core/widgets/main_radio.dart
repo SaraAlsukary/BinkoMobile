@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../extensions/context_extensions.dart';
-import '../services/shared_preferences_service.dart';
 
 class CustomRadio extends StatefulWidget {
   final int value;
@@ -88,8 +88,7 @@ class _CustomRadioState extends State<CustomRadio> {
                   ),
                   if (widget.price != null) ...[
                     Text(
-                      SharedPreferencesService.getCurrencySymbol()! +
-                          (widget.price ?? ''),
+                      'currency.symbol'.tr() + (widget.price ?? ''),
                       style: context.textTheme.bodyMedium!
                           .copyWith(color: context.theme.colorScheme.error),
                     ),

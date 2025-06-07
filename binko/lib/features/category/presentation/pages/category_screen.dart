@@ -1,4 +1,5 @@
 import 'package:binko/core/utils/request_status.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -27,7 +28,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text('Categories Screen'),
+          title: Text('category.title'.tr()),
         ),
         body: BlocBuilder<CategoryBloc, CategoryState>(
           bloc: getIt<CategoryBloc>(),
@@ -38,7 +39,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         onPressed: () {
                           getIt<CategoryBloc>().add(GetAllCategoriesEvent());
                         },
-                        icon: Icon(Icons.refresh)),
+                        icon: Icon(Icons.refresh),
+                        tooltip: 'category.refresh'.tr()),
                   )
                 : GridView.builder(
                     itemCount: state.categoriesStatus == RequestStatus.loading
@@ -55,7 +57,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           ? Skeletonizer(
                               enabled: true,
                               child: MultiColorBorderContainer(
-                                child: Text('Action'),
+                                child: Text('home.action'.tr()),
                               ))
                           : MultiColorBorderContainer(
                               child: Text(state.categories[index].name!),

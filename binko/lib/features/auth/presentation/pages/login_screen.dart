@@ -1,6 +1,7 @@
 import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:binko/features/main/presentation/pages/main_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,26 +63,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 80.verticalSpace,
                 MainTextField(
-                  label: 'E-mail',
-                  hint: 'example@mail.com',
+                  label: 'auth.email'.tr(),
+                  hint: 'auth.email_hint'.tr(),
                   controller: emailController,
                   validator: (p0) => p0?.isValidEmail() ?? false
                       ? null
-                      : 'Please Add A Valid Email',
+                      : 'auth.validation.invalid_email'.tr(),
                 ),
                 20.verticalSpace,
                 MainTextField(
-                  label: 'Password',
-                  hint: '*******',
+                  label: 'auth.password'.tr(),
+                  hint: 'auth.password_hint'.tr(),
                   isPassword: true,
                   controller: passwordController,
                   validator: (p0) => p0?.isValidPassword() ?? false
                       ? null
-                      : 'Please Add A Valid Password',
+                      : 'auth.validation.invalid_password'.tr(),
                 ),
                 20.verticalSpace,
                 MainButton(
-                    text: 'Login',
+                    text: 'auth.login'.tr(),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         getIt<AuthBloc>().add(LoginEvent(
@@ -93,9 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Don\'t Have Account?'),
+                    Text('auth.dont_have_account'.tr()),
                     Text(
-                      'Join Now',
+                      'auth.join_now'.tr(),
                       style: context.textTheme.titleSmall?.copyWith(
                           color: context.primaryColor,
                           fontWeight: FontWeight.bold),

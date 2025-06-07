@@ -8,15 +8,26 @@ part 'theme_state.dart';
 
 @lazySingleton
 class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit() : super(LightTheme());
-  getTheme() async {
+  ThemeCubit() : super(LightTheme()) {
+    getTheme();
+  }
+
+  Future<void> getTheme() async {
     final theme = SharedPreferencesService.getTheme();
     if (theme == 'dark') {
       emit(DarkTheme());
+    } else {
+      emit(LightTheme());
     }
   }
 
-  setTheme(String theme) async {
-    await SharedPreferencesService.storeTheme(theme);
+  Future<void> toggleTheme() async {
+    if (state is LightTheme) {
+      await SharedPreferencesService.storeTheme('dark');
+      emit(DarkTheme());
+    } else {
+      await SharedPreferencesService.storeTheme('light');
+      emit(LightTheme());
+    }
   }
 }

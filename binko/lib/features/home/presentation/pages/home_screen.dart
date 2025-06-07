@@ -1,12 +1,12 @@
 import 'package:binko/core/unified_api/api_variables.dart';
 import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/features/book/data/models/books_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../core/constants/assets.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/extensions/widget_extensions.dart';
 import '../../../../core/services/dependecies.dart';
@@ -33,10 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: Image.asset(Assets.assetsImgsLogo),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0).copyWith(top: 20),
         child: RefreshIndicator.adaptive(
@@ -49,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             slivers: [
               SliverToBoxAdapter(
                 child: Text(
-                  'Categories',
+                  'home.categories'.tr(),
                   style: context.textTheme.titleLarge,
                 ).onTap(() {
                   Navigator.push(
@@ -83,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? Skeletonizer(
                                       enabled: true,
                                       child: MultiColorBorderContainer(
-                                          child: Text('Action')),
+                                          child: Text('home.action'.tr())),
                                     )
                                   : MultiColorBorderContainer(
                                       child: Row(
@@ -118,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 sliver: SliverToBoxAdapter(
                   child: Text(
-                    'Famous Books',
+                    'home.famous_books'.tr(),
                     style: context.textTheme.titleLarge,
                   ),
                 ),
@@ -132,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return state.booksStatus == RequestStatus.success &&
                             state.books.isEmpty
                         ? Center(
-                            child: Text('There Is No Books Yet'),
+                            child: Text('error.no_books'.tr()),
                           )
                         : GridView.builder(
                             itemCount:

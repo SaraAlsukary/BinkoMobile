@@ -227,7 +227,7 @@ class _MainTextFieldState extends State<MainTextField>
                     : null,
 
                 suffixIcon: widget.isPassword
-                    ? (obsecureValue
+                    ? (!obsecureValue
                             ? Icon(Icons.visibility)
                             : Icon(Icons.visibility_off_rounded))
                         .animate(key: UniqueKey())

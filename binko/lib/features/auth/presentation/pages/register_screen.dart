@@ -1,5 +1,6 @@
 import 'package:binko/core/services/dependecies.dart';
 import 'package:binko/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
@@ -45,43 +46,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               MainTextField(
-                label: 'User Name',
-                hint: 'User Name',
+                label: 'auth.username'.tr(),
+                hint: 'auth.username_hint'.tr(),
                 controller: nameController,
-                validator: (p0) =>
-                    p0?.isNotShortText() ?? false ? null : 'Please Add A Name',
+                validator: (p0) => p0?.isNotShortText() ?? false
+                    ? null
+                    : 'auth.validation.required_name'.tr(),
               ),
               20.verticalSpace,
               MainTextField(
-                label: 'E-mail',
-                hint: 'example@mail.com',
+                label: 'auth.email'.tr(),
+                hint: 'auth.email_hint'.tr(),
                 controller: emailController,
                 validator: (p0) => p0?.isValidEmail() ?? false
                     ? null
-                    : 'Please Add A Valid Email',
+                    : 'auth.validation.invalid_email'.tr(),
               ),
               20.verticalSpace,
               MainTextField(
-                label: 'Password',
-                hint: '*******',
+                label: 'auth.password'.tr(),
+                hint: 'auth.password_hint'.tr(),
                 controller: passwordController,
                 isPassword: true,
                 validator: (p0) => p0?.isValidPassword() ?? false
                     ? null
-                    : 'Please Add A Valid Password',
+                    : 'auth.validation.invalid_password'.tr(),
               ),
               20.verticalSpace,
               MainTextField(
-                label: 'Confirm Password',
+                label: 'auth.confirm_password'.tr(),
                 isPassword: true,
-                hint: '********',
+                hint: 'auth.confirm_password_hint'.tr(),
                 controller: confirmPasswordController,
-                validator: (p0) =>
-                    p0?.isValidEmail() ?? false ? null : 'Password Mismatch',
+                validator: (p0) => p0 != null && p0 == passwordController.text
+                    ? null
+                    : 'auth.validation.password_mismatch'.tr(),
               ),
               20.verticalSpace,
               MainButton(
-                  text: 'Register',
+                  text: 'auth.register'.tr(),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       getIt<AuthBloc>().add(CreateUserEvent(
@@ -95,9 +98,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Already Have an Account?'),
+                  Text('auth.already_have_account'.tr()),
                   Text(
-                    'Login',
+                    'auth.login'.tr(),
                     style: context.textTheme.titleSmall?.copyWith(
                         color: context.primaryColor,
                         fontWeight: FontWeight.bold),

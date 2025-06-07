@@ -1,4 +1,5 @@
 import 'package:binko/core/services/shared_preferences_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -32,11 +33,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       },
       showNextButton: true,
       showSkipButton: true,
-      skip: Text('Skip'),
-      next: Text('Next'),
+      skip: Text('onboarding.skip'.tr()),
+      next: Text('onboarding.next'.tr()),
+      done: Text('onboarding.done'.tr()),
       // globalBackgroundColor: context.primaryColor,
-      done: Text('Done'),
-
       nextStyle: TextButton.styleFrom(foregroundColor: Colors.black),
       skipStyle: TextButton.styleFrom(foregroundColor: Colors.black),
       doneStyle: TextButton.styleFrom(foregroundColor: Colors.black),
@@ -49,48 +49,39 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           activeSize: Size(20, 20)),
       pages: [
         PageViewModel(
-            title: 'Binko',
-            body: 'Binko Is Your Friend',
+            title: 'onboarding.title'.tr(),
+            body: 'onboarding.description'.tr(),
             decoration: PageDecoration(
                 pageMargin: EdgeInsets.all(10),
                 boxDecoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(
-                          Assets.assetsImgsBackground,
-                        ),
+                        image: AssetImage(Assets.assetsImgsBackground),
                         colorFilter: ColorFilter.mode(
                             context.primaryColor, BlendMode.srcIn)))),
             image: Image.asset(Assets.assetsImgsIntro)),
         PageViewModel(
+            title: 'onboarding.title'.tr(),
+            body: 'onboarding.description'.tr(),
             decoration: PageDecoration(
                 pageMargin: EdgeInsets.all(10),
                 boxDecoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(
-                          Assets.assetsImgsBackground,
-                        ),
+                        image: AssetImage(Assets.assetsImgsBackground),
                         colorFilter: ColorFilter.mode(
                             context.primaryColor, BlendMode.srcIn)))),
-            title: 'Binko',
-            body: 'Binko Is Your Friend',
             image: Image.asset(Assets.assetsImgsBook)),
         PageViewModel(
+            title: 'onboarding.title'.tr(),
+            body: 'onboarding.description'.tr(),
             decoration: PageDecoration(
                 pageMargin: EdgeInsets.all(10),
                 boxDecoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(
-                          Assets.assetsImgsBackground,
-                        ),
+                        image: AssetImage(Assets.assetsImgsBackground),
                         colorFilter: ColorFilter.mode(
                             context.primaryColor, BlendMode.srcIn)))),
-            title: 'Binko',
-            body: 'Binko Is Your Friend',
-            image: Image.asset(
-              Assets.assetsImgsLogo,
-              width: .6.sw,
-              fit: BoxFit.fitWidth,
-            ))
+            image: Image.asset(Assets.assetsImgsLogo,
+                width: .6.sw, fit: BoxFit.fitWidth))
       ],
     );
   }

@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<ThemeCubit, ThemeState>(
             bloc: getIt<ThemeCubit>(),
             builder: (context, state) {
+              print(state);
               return ThemeProvider(
                   initTheme: (state is DarkTheme)
                       ? MaterialTheme(

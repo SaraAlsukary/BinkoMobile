@@ -1,1 +1,127 @@
-{}
+{
+    "app": {
+        "name": "Binko"
+    },
+    "welcome": {
+        "title": "Welcome To Binko!",
+        "description": "This Community Provides you many wonderful books in different categories, and make it possible to interact with this books, add your comments that show your point of view! We wish you like it",
+        "start_journey": "Start Journey"
+    },
+    "auth": {
+        "register": "Register",
+        "login": "Login",
+        "email": "Email",
+        "email_hint": "example@mail.com",
+        "password": "Password",
+        "password_hint": "*******",
+        "confirm_password": "Confirm Password",
+        "confirm_password_hint": "********",
+        "username": "Username",
+        "username_hint": "Enter your username",
+        "already_have_account": "Already have an account?",
+        "dont_have_account": "Don't have an account?",
+        "join_now": "Join Now",
+        "validation": {
+            "required_name": "Please enter your name",
+            "invalid_email": "Please enter a valid email",
+            "invalid_password": "Please enter a valid password",
+            "password_mismatch": "Passwords do not match"
+        }
+    },
+    "book": {
+        "author": "Author",
+        "publish_date": "Publish Date",
+        "likes": "Like",
+        "comments": "Comments",
+        "add_comment": "+ Add Comment",
+        "default_description": "No description available",
+        "settings": "Reading Settings",
+        "font_size": "Font Size",
+        "font_family": "Font Family",
+        "background": "Background Color",
+        "refresh": "Refresh",
+        "read": "Read",
+        "summary": "Book Summary",
+        "close": "Close"
+    },
+    "dialog": {
+        "yes": "Yes",
+        "no": "No",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "success": "Success",
+        "error": "Error",
+        "close": "Close"
+    },
+    "switch": {
+        "on": "On",
+        "off": "Off",
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+    },
+    "form": {
+        "select": "Select",
+        "error": "Error",
+        "required": "Required",
+        "optional": "Optional",
+        "submit": "Submit"
+    },
+    "currency": {
+        "symbol": "$"
+    },
+    "profile": {
+        "title": "Profile",
+        "settings": "Settings",
+        "my_favorite": "My Favorites",
+        "my_published_books": "My Published Books",
+        "bio": "Bio",
+        "username": "Username",
+        "change": "Save Changes",
+        "logout": "Log Out",
+        "no_favored_books": "No Favorite Books",
+        "language": "Language",
+        "english": "English",
+        "arabic": "Arabic",
+        "theme": "Theme",
+        "light": "Light Mode",
+        "dark": "Dark Mode"
+    },
+    "onboarding": {
+        "skip": "Skip",
+        "next": "Next",
+        "done": "Get Started",
+        "title": "Binko",
+        "description": "Binko Is Your Friend"
+    },
+    "navigation": {
+        "home": "Home",
+        "profile": "Profile",
+        "books": "Books",
+        "settings": "Settings",
+        "search": "Search"
+    },
+    "error": {
+        "general": "Something went wrong",
+        "network": "Network error",
+        "try_again": "Try Again",
+        "no_connection": "No internet connection",
+        "no_books": "No books available yet",
+        "no_chapters": "No Chapters"
+    },
+    "home": {
+        "categories": "Categories",
+        "famous_books": "Famous Books",
+        "action": "Action",
+        "refresh": "Pull to refresh"
+    },
+    "category": {
+        "title": "Categories",
+        "all_categories": "All Categories",
+        "no_categories": "No categories available",
+        "refresh": "Refresh"
+    },
+    "search": {
+        "title": "Search",
+        "hint": "Search for books..."
+    }
+}

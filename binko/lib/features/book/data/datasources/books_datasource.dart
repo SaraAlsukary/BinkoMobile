@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:binko/core/unified_api/api_variables.dart';
 import 'package:binko/features/book/data/models/books_model.dart';
 import 'package:binko/features/book/data/models/chapter_model.dart';
+import 'package:binko/features/book/data/models/comment_model.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/services/dependecies.dart';
@@ -39,6 +40,21 @@ class RemoteBookDatasource {
           return List<ChapterModel>.from(jsonDecode(s).map((e) {
             return ChapterModel.fromJson(e);
           }).toList());
+        });
+    return await getApi.callRequest();
+  }
+
+  Future<List<CommentModel>> getComments(BooksModel book) async {
+    final getApi = GetApi(
+        uri: ApiVariables().getAllComments(),
+        fromJson: (s) {
+          return List<CommentModel>.from(jsonDecode(s)
+              .map((x) {
+                return CommentModel.fromJson(x);
+              })
+              .toList()
+              .where((e) => e.book == book.name)
+              .toList());
         });
     return await getApi.callRequest();
   }

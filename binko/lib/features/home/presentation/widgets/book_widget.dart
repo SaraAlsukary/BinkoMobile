@@ -65,9 +65,8 @@ class BookWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
-                DateFormat(
-                  'yyyy-MM-dd',
-                ).format(book.pubDat ?? DateTime.now()),
+                DateFormat.yMMMd(context.locale.languageCode)
+                    .format(book.pubDat ?? DateTime.now()),
                 style: context.textTheme.titleSmall!,
               ),
             ),

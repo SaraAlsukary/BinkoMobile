@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -31,7 +32,7 @@ class AboutUsScreen extends StatelessWidget {
                 children: [
                   Center(
                     child: Text(
-                      'Welcome To Binko!',
+                      'welcome.title'.tr(),
                       style: context.textTheme.titleLarge,
                     ),
                   ),
@@ -40,7 +41,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   Center(
                     child: Text(
-                      'This Community Provides you many wonderful books in different categories, and make it possible to interact with this books ,add your comments that show your point of view!. We wish you like it',
+                      'welcome.description'.tr(),
                       maxLines: 6,
                       textAlign: TextAlign.center,
                       style: context.textTheme.bodyLarge,
@@ -51,7 +52,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   MainButton(
                       color: context.primaryColor,
-                      text: 'Start Journey',
+                      text: 'welcome.start_journey'.tr(),
                       fontSize: 24,
                       fontFamily: 'LoveYa',
                       onPressed: () {

@@ -1,1 +1,127 @@
-{}
+{
+    "app": {
+        "name": "بينكو"
+    },
+    "welcome": {
+        "title": "مرحباً بك في بينكو!",
+        "description": "يوفر لك هذا المجتمع العديد من الكتب الرائعة في فئات مختلفة، ويجعل من الممكن التفاعل مع هذه الكتب، وإضافة تعليقاتك التي تظهر وجهة نظرك! نتمنى أن يعجبك",
+        "start_journey": "ابدأ الرحلة"
+    },
+    "book": {
+        "author": "المؤلف",
+        "publish_date": "تاريخ النشر",
+        "likes": " إعجاب",
+        "comments": "التعليقات",
+        "add_comment": "+ إضافة تعليق",
+        "default_description": "نص وصفي افتراضي باللغة العربية. يمكن تعديل هذا النص حسب الحاجة.",
+        "settings": "إعدادات القراءة",
+        "font_size": "حجم الخط",
+        "font_family": "نوع الخط",
+        "background": "لون الخلفية",
+        "refresh": "تحديث",
+        "read": "قراءة",
+        "summary": "ملخص الكتاب",
+        "close": "إغلاق"
+    },
+    "dialog": {
+        "yes": "نعم",
+        "no": "لا",
+        "cancel": "إلغاء",
+        "confirm": "تأكيد",
+        "success": "نجاح",
+        "error": "خطأ",
+        "close": "إغلاق"
+    },
+    "switch": {
+        "on": "تشغيل",
+        "off": "إيقاف",
+        "enabled": "مفعل",
+        "disabled": "معطل"
+    },
+    "form": {
+        "select": "اختر",
+        "error": "خطأ",
+        "required": "مطلوب",
+        "optional": "اختياري",
+        "submit": "إرسال"
+    },
+    "currency": {
+        "symbol": "د.ع"
+    },
+    "profile": {
+        "title": "الملف الشخصي",
+        "settings": "الإعدادات",
+        "my_favorite": "المفضلة",
+        "my_published_books": "كتبي المنشورة",
+        "bio": "نبذة",
+        "username": "اسم المستخدم",
+        "change": "تغيير",
+        "logout": "تسجيل الخروج",
+        "no_favored_books": "لا توجد كتب مفضلة",
+        "language": "اللغة",
+        "english": "الإنجليزية",
+        "arabic": "العربية",
+        "theme": "المظهر",
+        "light": "فاتح",
+        "dark": "داكن"
+    },
+    "auth": {
+        "register": "تسجيل",
+        "login": "تسجيل الدخول",
+        "email": "البريد الإلكتروني",
+        "email_hint": "example@mail.com",
+        "password": "كلمة المرور",
+        "password_hint": "*******",
+        "confirm_password": "تأكيد كلمة المرور",
+        "confirm_password_hint": "********",
+        "username": "اسم المستخدم",
+        "username_hint": "اسم المستخدم",
+        "already_have_account": "لديك حساب بالفعل؟",
+        "dont_have_account": "ليس لديك حساب؟",
+        "join_now": "انضم الآن",
+        "validation": {
+            "required_name": "الرجاء إضافة اسم",
+            "invalid_email": "الرجاء إضافة بريد إلكتروني صحيح",
+            "invalid_password": "الرجاء إضافة كلمة مرور صحيحة",
+            "password_mismatch": "كلمة المرور غير متطابقة"
+        }
+    },
+    "onboarding": {
+        "skip": "تخطي",
+        "next": "التالي",
+        "done": "تم",
+        "title": "بينكو",
+        "description": "بينكو صديقك"
+    },
+    "navigation": {
+        "home": "الرئيسية",
+        "profile": "الملف الشخصي",
+        "books": "الكتب",
+        "settings": "الإعدادات",
+        "search": "بحث"
+    },
+    "error": {
+        "general": "حدث خطأ ما",
+        "network": "خطأ في الشبكة",
+        "try_again": "حاول مرة أخرى",
+        "no_connection": "لا يوجد اتصال بالإنترنت",
+        "no_books": "لا توجد كتب متوفرة حالياً",
+        "no_chapters": "لا توجد فصول"
+    },
+    "home": {
+        "categories": "التصنيفات",
+        "famous_books": "الكتب المشهورة",
+        "action": "أكشن",
+        "refresh": "اسحب للتحديث"
+    },
+    "category": {
+        "title": "التصنيفات",
+        "all_categories": "جميع التصنيفات",
+        "no_categories": "لا توجد تصنيفات متوفرة",
+        "refresh": "تحديث"
+    },
+    "search": {
+        "title": "بحث",
+        "hint": "ابحث عن الكتب..."
+    }
+}
