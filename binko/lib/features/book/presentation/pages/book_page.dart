@@ -28,6 +28,9 @@ class _BookPageState extends State<BookPage> {
   final List<String> _fontFamilies = ['Markazi', 'Roboto', 'Leckerli'];
   final List<Color> _backgroundColors = [
     Colors.white,
+    Colors.grey.shade200,
+    Color.fromARGB(255, 212, 255, 195), // Sepia
+
     Color(0xFFF5E6D3), // Sepia
     Color(0xFF303030), // Dark
   ];
