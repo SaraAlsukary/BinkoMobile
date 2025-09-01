@@ -3,6 +3,7 @@ import "package:flutter/services.dart";
 
 class MaterialTheme {
   final String fontFamily;
+
   const MaterialTheme(this.fontFamily);
 
   static ColorScheme lightScheme() {

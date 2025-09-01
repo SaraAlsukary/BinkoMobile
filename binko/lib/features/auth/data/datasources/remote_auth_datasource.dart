@@ -9,11 +9,10 @@ import '../models/user_model.dart';
 class RemoteAuthDatasource {
   Future<UserModel> login(BodyMap body) async {
     final postApi = PostApi(
-        uri: ApiVariables().login(),
-        body: body,
-        fromJson: (s) {
-          return UserModel.fromJson(jsonDecode(s)['user']);
-        });
+      uri: Uri.parse('http://10.0.2.2:8000/api/login/'),
+      body: {"username": "fffffa@gmail.com", "password": "12345678"},
+      fromJson: (s) => UserModel.fromJson(jsonDecode(s)['user']),
+    );
     return await postApi.callRequest();
   }
 

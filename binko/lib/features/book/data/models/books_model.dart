@@ -12,7 +12,10 @@ sealed class BooksModel with _$BooksModel {
     @JsonKey(name: 'user') AuthorModel? author,
     @JsonKey(name: 'description') String? description,
     @JsonKey(name: 'publication_date') DateTime? pubDat,
+    @JsonKey(name: 'categories') List<String>? categories, // Add this
+    @JsonKey(name: 'is_accept') bool? isAccept, // Add this
   }) = _BooksModel;
+
   factory BooksModel.fromJson(Map<String, dynamic> json) =>
       _$BooksModelFromJson(json);
 }
@@ -23,6 +26,7 @@ sealed class AuthorModel with _$AuthorModel {
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'name') String? name,
   }) = _AuthorModel;
+
   factory AuthorModel.fromJson(Map<String, dynamic> json) =>
       _$AuthorModelFromJson(json);
 }

@@ -7,13 +7,13 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/usecase/usecase.dart';
 
 @injectable
-class GetAllBooksUsecase implements UseCase<List<BooksModel>, NoParams> {
+class AddBookUsecase implements UseCase<void, BooksModel> {
   final BooksRepo repo;
 
-  GetAllBooksUsecase({required this.repo});
+  AddBookUsecase({required this.repo});
 
   @override
-  Future<Either<Failure, List<BooksModel>>> call(NoParams params) async {
-    return await repo.getAllBooks();
+  Future<Either<Failure, void>> call(BooksModel params) async {
+    return await repo.addBook(params);
   }
 }

@@ -12,10 +12,12 @@ typedef FromJson<T> = T Function(String body);
 class DeleteApi<T> with HandlingExceptionRequest {
   final Uri uri;
   final FromJson fromJson;
+
   DeleteApi({
     required this.uri,
     required this.fromJson,
   });
+
   Future<T> callRequest() async {
     try {
       final token = SharedPreferencesService.getToken();

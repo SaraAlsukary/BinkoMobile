@@ -5,7 +5,9 @@ import '../extensions/string_parser.dart';
 
 class SharedPreferencesService {
   SharedPreferencesService._();
+
   static late final SharedPreferences _sp;
+
   static Future<void> init() async =>
       _sp = await SharedPreferences.getInstance();
 

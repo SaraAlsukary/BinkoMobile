@@ -11,10 +11,12 @@ class ShimmerWidget extends StatelessWidget {
     this.borderRadius,
     this.shape,
   });
+
   final double? width;
   final double? height;
   final double? borderRadius;
   final BoxShape? shape;
+
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(

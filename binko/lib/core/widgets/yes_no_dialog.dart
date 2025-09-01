@@ -13,11 +13,13 @@ class YesNoDialog extends StatelessWidget {
     this.yesTitle,
     this.noTitle,
   });
+
   final String title;
   final Function() onTapYes;
   final Function()? onTapNo;
   final String? yesTitle;
   final String? noTitle;
+
   @override
   Widget build(BuildContext context) {
     return Dialog(

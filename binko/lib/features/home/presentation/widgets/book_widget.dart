@@ -14,6 +14,7 @@ class BookWidget extends StatelessWidget {
     super.key,
     required this.book,
   });
+
   final BooksModel book;
 
   @override

@@ -11,6 +11,7 @@ sealed class CommentModel with _$CommentModel {
     @JsonKey(name: 'book') String? book,
     @JsonKey(name: 'comment') String? comment,
   }) = _CommentModel;
+
   factory CommentModel.fromJson(Map<String, dynamic> json) =>
       _$CommentModelFromJson(json);
 }

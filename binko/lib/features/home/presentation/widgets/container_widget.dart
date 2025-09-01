@@ -10,10 +10,12 @@ class MultiColorBorderContainer extends StatelessWidget {
     this.width,
     this.height,
   });
+
   final Widget child;
   final Color? color;
   final double? width;
   final double? height;
+
   @override
   Widget build(BuildContext context) {
     return Container(

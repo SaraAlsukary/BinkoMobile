@@ -1,6 +1,7 @@
 import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:binko/features/main/presentation/pages/main_screen.dart';
+import 'package:binko/features/profile/presentation/pages/profile_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
@@ -108,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               (context, animation, secondaryAnimation) =>
                                   ScaleTransition(
                             scale: animation,
-                            child: MainScreen(),
+                            child: ProfileScreen(),
                           ),
                         ),
                         (route) => false,

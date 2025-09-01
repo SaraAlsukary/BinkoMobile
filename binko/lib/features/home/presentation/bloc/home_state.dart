@@ -6,6 +6,7 @@ class HomeState {
   final RequestStatus booksStatus;
   final List<CategoriesModel> categories;
   final List<BooksModel> books;
+
   HomeState({
     this.categoriesStatus = RequestStatus.init,
     this.booksStatus = RequestStatus.init,

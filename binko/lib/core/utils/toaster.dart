@@ -65,8 +65,10 @@ class CustomLoadingWidget extends StatelessWidget {
     this.width,
     this.height,
   });
+
   final double? width;
   final double? height;
+
   @override
   Widget build(BuildContext context) {
     return LottieBuilder.asset(

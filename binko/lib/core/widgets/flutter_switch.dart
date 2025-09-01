@@ -428,6 +428,7 @@ class _FlutterSwitchState extends State<FlutterSwitch>
 
   FontWeight get _activeTextFontWeight =>
       widget.activeTextFontWeight ?? FontWeight.w900;
+
   FontWeight get _inactiveTextFontWeight =>
       widget.inactiveTextFontWeight ?? FontWeight.w900;
 

@@ -15,7 +15,9 @@ class BookPage extends StatefulWidget {
     super.key,
     required this.book,
   });
+
   final BooksModel book;
+
   @override
   State<BookPage> createState() => _BookPageState();
 }
@@ -38,7 +40,9 @@ class _BookPageState extends State<BookPage> {
   @override
   void initState() {
     super.initState();
-    getIt<BookBloc>().add(GetBookchaptersEvent(id: widget.book.id!));
+    getIt<BookBloc>().add(GetBookchaptersEvent(id:  widget.book.id!
+    ));
+
   }
 
   void _showSettingsDialog() {
@@ -145,8 +149,8 @@ class _BookPageState extends State<BookPage> {
           backgroundColor: backgroundColor,
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
-              widget.book.name!,
+            title: Text('D'
+              // widget.book.name!,
             ),
             actions: [
               IconButton(
@@ -164,7 +168,9 @@ class _BookPageState extends State<BookPage> {
                       ? IconButton.filled(
                           onPressed: () {
                             getIt<BookBloc>()
-                                .add(GetBookchaptersEvent(id: widget.book.id!));
+                                .add(GetBookchaptersEvent(id:2,
+                            // widget.book.id!
+                            ));
                           },
                           icon: Icon(Icons.refresh),
                           tooltip: 'book.refresh'.tr())

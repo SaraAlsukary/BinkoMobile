@@ -11,6 +11,7 @@ class GetBookChaptersUsecase implements UseCase<List<ChapterModel>, int> {
   final BooksRepo repo;
 
   GetBookChaptersUsecase({required this.repo});
+
   @override
   Future<Either<Failure, List<ChapterModel>>> call(int params) async {
     return await repo.getBookchapters(params);

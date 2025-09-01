@@ -10,6 +10,7 @@ sealed class ChapterModel with _$ChapterModel {
       @JsonKey(name: 'title') String? title,
       @JsonKey(name: 'content_text') String? content,
       @JsonKey(name: 'audio') String? audio}) = _ChapterModel;
+
   factory ChapterModel.fromJson(Map<String, dynamic> json) =>
       _$ChapterModelFromJson(json);
 }

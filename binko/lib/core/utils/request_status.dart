@@ -6,7 +6,7 @@ extension RequestStatusExtension on RequestStatus {
     return toString().split('.').last; // Extract the enum name
   }
 
-  // Convert a string to an enum
+// Convert a string to an enum
 }
 
 extension RequestStatusExtensionString on String {

@@ -20,7 +20,9 @@ class DetailsScreen extends StatefulWidget {
     super.key,
     required this.book,
   });
+
   final BooksModel book;
+
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
 }
@@ -205,7 +207,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               return ScaleTransition(
                                 scale: animation,
                                 child: BookPage(
-                                  book: widget.book,
+                                   book: widget.book,
                                 ),
                               );
                             },

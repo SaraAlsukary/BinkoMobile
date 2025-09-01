@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:binko/core/error/failures.dart';
 import 'package:binko/core/unified_api/handling_exception_manager.dart';
 import 'package:binko/features/book/data/datasources/books_datasource.dart';
@@ -12,6 +14,7 @@ class BooksRepoImpl with HandlingExceptionManager implements BooksRepo {
   final RemoteBookDatasource datasource;
 
   BooksRepoImpl({required this.datasource});
+
   @override
   Future<Either<Failure, List<BooksModel>>> getAllBooks() async {
     return wrapHandling(tryCall: () async {
@@ -37,6 +40,27 @@ class BooksRepoImpl with HandlingExceptionManager implements BooksRepo {
   Future<Either<Failure, int>> getLikes(int id) async {
     return wrapHandling(tryCall: () async {
       return await datasource.getLikesCount(id);
+    });
+  }
+
+  @override
+  Future<Either<Failure, void>> addBook(BooksModel book) {
+    return wrapHandling(tryCall: () async {
+      return await datasource.addBook(book);
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<BooksModel>>> getMyBook(int id) {
+    return wrapHandling(tryCall: () async {
+      return await datasource.getMyBooks(id);
+    });
+  }
+
+  @override
+  Future<Either<Failure, ChapterModel>> addChapter({required int bookId, String? title, String? content, File? audioFile}) {
+    return wrapHandling(tryCall: () async {
+      return await datasource.addChapter(bookId: bookId);
     });
   }
 }

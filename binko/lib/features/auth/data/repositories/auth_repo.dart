@@ -8,6 +8,7 @@ import '../models/user_model.dart';
 
 class AuthRepo with HandlingExceptionManager {
   final RemoteAuthDatasource datasource;
+
   Future<Either<Failure, UserModel>> login(BodyMap body) async {
     return wrapHandling(tryCall: () async {
       return await datasource.login(body);

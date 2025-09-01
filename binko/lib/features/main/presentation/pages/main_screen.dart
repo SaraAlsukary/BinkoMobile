@@ -1,5 +1,8 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:binko/core/extensions/widget_extensions.dart';
+import 'package:binko/features/book/data/models/books_model.dart';
+import 'package:binko/features/book/presentation/pages/add_book_page.dart';
+import 'package:binko/features/book/presentation/pages/book_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -178,6 +181,7 @@ class MainScreen extends StatelessWidget {
                         },
                       ),
                     ),
+                    AddBookPage(),
                     ProfileScreen(),
                   ],
                 ),
@@ -194,8 +198,15 @@ class MainScreen extends StatelessWidget {
                           icon: Assets.assetsSvgsBookMark.toSvg(),
                           label: 'profile.my_favorite'.tr()),
                       BottomNavigationBarItem(
-                          icon: Icon(Icons.person),
-                          label: 'navigation.profile'.tr())
+                        icon: Assets.assetsSvgsAddBook.toSvg(),
+                        label: 'Book',
+                      ),
+                      BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.person,
+                            color: Colors.black,
+                          ),
+                          label: 'navigation.profile'.tr()),
                     ]),
               );
             },

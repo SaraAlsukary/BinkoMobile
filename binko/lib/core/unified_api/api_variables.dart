@@ -33,20 +33,42 @@ class ApiVariables {
   }
 
   String imageUrl(String path) => _imageUrl(path: path).toString();
+
   Uri login() => _mainUri(path: 'login/');
-  Uri createUser() => _mainUri(path: 'create-user');
+
+  Uri createUser() => _mainUri(path: 'create-user/');
+
   Uri logout() => _mainUri(path: 'logout');
+
   Uri updateProfile(int id) => _mainUri(path: 'update-user/$id/');
+
   Uri getAllCategories() => _mainUri(path: 'getallcat');
+
   Uri getAllBooks() => _mainUri(path: 'allbooks');
+
+  Uri getMyBooks(int id) => _mainUri(path: 'mybook/$id/');
+
   Uri addLike(int id, int userId) => _mainUri(path: 'books/like/$userId/$id/');
+
   Uri addComment(int id, int userId) =>
       _mainUri(path: 'books/$id/users/$userId/comments/');
+
   Uri deleteFavored(int id, int userId) =>
       _mainUri(path: 'book-favs/$userId/$id/');
+
   Uri getLikes(int id) => _mainUri(path: 'books/$id/likes/');
+
   Uri getAllComments() => _mainUri(path: 'getallcomment/');
+
   Uri getBookChapters(int id) => _mainUri(path: 'books/$id/chapters');
+
   Uri getFavoredBooks(int id) => _mainUri(path: 'favorite-books/$id/');
+
   Uri addToFavored() => _mainUri(path: 'add-favorite/');
+
+  Uri addCategory() => _mainUri(path: 'add-category/');
+
+  Uri addBook(int userId) => _mainUri(path: 'books/add/$userId/');
+
+  Uri addChapter(int bookId) => _mainUri(path: 'books/$bookId/add-chapter/');
 }

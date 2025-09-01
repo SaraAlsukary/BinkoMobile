@@ -23,6 +23,7 @@ class MainButton extends StatelessWidget {
     this.icon,
     this.fontFamily,
   });
+
   final double? eleavation;
   final String text;
   final double? width;
@@ -38,6 +39,7 @@ class MainButton extends StatelessWidget {
   final Color? borderColor;
   final Widget? icon;
   final bool hasBorder;
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(

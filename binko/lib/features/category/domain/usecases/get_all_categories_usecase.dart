@@ -11,6 +11,7 @@ class GetAllCategoriesUsecase
   final CategoriesRepository repository;
 
   GetAllCategoriesUsecase({required this.repository});
+
   @override
   Future<Either<Failure, List<CategoriesModel>>> call(NoParams params) async {
     return await repository.getAllCategories();

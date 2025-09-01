@@ -17,6 +17,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetAllCategoriesUsecase getAllCategoriesUsecase;
   final GetAllBooksUsecase getAllBooksUsecase;
+
   HomeBloc(
     this.getAllCategoriesUsecase,
     this.getAllBooksUsecase,

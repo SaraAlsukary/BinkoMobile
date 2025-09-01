@@ -13,10 +13,24 @@ class CategoriesRepoImpl
   final RemoteCategoryDatasource datasource;
 
   CategoriesRepoImpl({required this.datasource});
+
   @override
   Future<Either<Failure, List<CategoriesModel>>> getAllCategories() async {
     return wrapHandling(tryCall: () async {
       return await datasource.getAllCategories();
+    });
+  }
+
+  @override
+  Future<Either<Failure, CategoriesModel>> addCategory({
+    required String name,
+    required String nameArabic,
+  }) async {
+    return wrapHandling(tryCall: () async {
+      return await datasource.addCategory(
+        name: name,
+        nameArabic: nameArabic,
+      );
     });
   }
 }

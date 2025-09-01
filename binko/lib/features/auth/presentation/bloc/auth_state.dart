@@ -4,6 +4,7 @@ part of 'auth_bloc.dart';
 class AuthState {
   final UserModel? user;
   final RequestStatus status;
+
   const AuthState({
     this.user,
     this.status = RequestStatus.init,

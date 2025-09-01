@@ -4,4 +4,9 @@ import 'package:dartz/dartz.dart';
 
 abstract class CategoriesRepository {
   Future<Either<Failure, List<CategoriesModel>>> getAllCategories();
+
+  Future<Either<Failure, CategoriesModel>> addCategory({
+    required String name,
+    required String nameArabic,
+  });
 }

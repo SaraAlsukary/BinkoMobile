@@ -3,6 +3,7 @@ part of 'profile_bloc.dart';
 
 class ProfileState {
   final List<BooksModel> favoredBooks;
+
   const ProfileState({
     this.favoredBooks = const [],
   });

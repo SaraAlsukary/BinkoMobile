@@ -8,3 +8,19 @@ abstract class CategoryEvent extends Equatable {
 }
 
 class GetAllCategoriesEvent extends CategoryEvent {}
+
+class AddCategoryEvent extends CategoryEvent {
+  final String name;
+  final String nameArabic;
+
+  const AddCategoryEvent({
+    required this.name,
+    required this.nameArabic,
+  });
+
+  @override
+  List<Object> get props => [
+        name,
+        nameArabic,
+      ];
+}
