@@ -63,12 +63,12 @@ extension GetItInjectableX on _i174.GetIt {
         _i446.BooksRepoImpl(datasource: gh<_i1028.RemoteBookDatasource>()));
     gh.lazySingleton<_i742.AddChapterUseCase>(
         () => _i742.AddChapterUseCase(gh<_i125.BooksRepo>()));
+    gh.factory<_i874.AddBookUsecase>(
+        () => _i874.AddBookUsecase(repo: gh<_i125.BooksRepo>()));
     gh.factory<_i140.GetAllBooksUsecase>(
         () => _i140.GetAllBooksUsecase(repo: gh<_i125.BooksRepo>()));
     gh.factory<_i371.GetBookChaptersUsecase>(
         () => _i371.GetBookChaptersUsecase(repo: gh<_i125.BooksRepo>()));
-    gh.factory<_i874.AddBookUsecase>(
-        () => _i874.AddBookUsecase(repo: gh<_i125.BooksRepo>()));
     gh.factory<_i68.GetMyBooksUsecase>(
         () => _i68.GetMyBooksUsecase(repo: gh<_i125.BooksRepo>()));
     gh.factory<_i471.CategoriesRepository>(() => _i175.CategoriesRepoImpl(

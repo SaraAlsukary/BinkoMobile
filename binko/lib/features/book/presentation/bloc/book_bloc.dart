@@ -60,7 +60,9 @@ class BookBloc extends Bloc<BookEvent, BookState> {
     on<AddBookEvent>((event, emit) async {
       emit(state.copyWith(addBookStatus: RequestStatus.loading));
 
-      final addResult = await addBookUsecase(event.book);
+      final addResult = await addBookUsecase(
+        AddBookParams(event.book, event.imageFile),
+      );
       final bool addFailed = addResult.fold((l) => true, (r) => false);
       if (addFailed) {
         emit(state.copyWith(addBookStatus: RequestStatus.failed));

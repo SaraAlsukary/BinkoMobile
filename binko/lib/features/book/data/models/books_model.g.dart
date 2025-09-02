@@ -14,6 +14,7 @@ _BooksModel _$BooksModelFromJson(Map<String, dynamic> json) => _BooksModel(
           ? null
           : AuthorModel.fromJson(json['user'] as Map<String, dynamic>),
       description: json['description'] as String?,
+      content: json['content'] as String?,
       pubDat: json['publication_date'] == null
           ? null
           : DateTime.parse(json['publication_date'] as String),
@@ -21,6 +22,7 @@ _BooksModel _$BooksModelFromJson(Map<String, dynamic> json) => _BooksModel(
           ?.map((e) => e as String)
           .toList(),
       isAccept: json['is_accept'] as bool?,
+      language: json['language'] as String?,
     );
 
 Map<String, dynamic> _$BooksModelToJson(_BooksModel instance) =>
@@ -30,9 +32,11 @@ Map<String, dynamic> _$BooksModelToJson(_BooksModel instance) =>
       'image': instance.image,
       'user': instance.author,
       'description': instance.description,
+      'content': instance.content,
       'publication_date': instance.pubDat?.toIso8601String(),
       'categories': instance.categories,
       'is_accept': instance.isAccept,
+      'language': instance.language,
     };
 
 _AuthorModel _$AuthorModelFromJson(Map<String, dynamic> json) => _AuthorModel(

@@ -1,6 +1,7 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:binko/core/extensions/string_parser.dart';
 import 'package:binko/core/extensions/widget_extensions.dart';
-import 'package:binko/features/book/data/models/books_model.dart';
+import 'package:binko/core/utils/theme/light/light_theme.dart';
 import 'package:binko/features/book/presentation/pages/add_book_page.dart';
 import 'package:binko/features/book/presentation/pages/book_page.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -11,9 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/assets.dart';
 import '../../../../core/cubit/theme_cubit.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../../../core/extensions/string_parser.dart';
 import '../../../../core/services/dependecies.dart';
-import '../../../../core/utils/theme/light/light_theme.dart';
 import '../../../../core/widgets/main_text_field.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/pages/login_screen.dart';
@@ -28,197 +27,195 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeSwitcher.switcher(
-        clipper: ThemeSwitcherCircleClipper(),
-        builder: (context, switcher) {
-          return BlocBuilder<MainCubit, MainState>(
-            bloc: getIt<MainCubit>(),
-            builder: (context, state) {
-              return Scaffold(
-                appBar: AppBar(
-                  forceMaterialTransparency: true,
-                  title: Image.asset(Assets.assetsImgsLogo),
-                ),
-                endDrawer: Drawer(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      DrawerHeader(
-                        decoration: BoxDecoration(
-                          color: context.primaryColor,
-                        ),
-                        child: Center(
-                          child: Image.asset(
-                            Assets.assetsImgsLogo,
-                            color: Colors.white,
-                            width: 120,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        title: Text('profile.language'.tr()),
-                        trailing: DropdownButton<String>(
-                          value: context.locale.languageCode,
-                          underline: SizedBox(),
-                          items: [
-                            DropdownMenuItem(
-                              value: 'en',
-                              child: Text('profile.english'.tr()),
-                            ),
-                            DropdownMenuItem(
-                              value: 'ar',
-                              child: Text('profile.arabic'.tr()),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            if (value != null) {
-                              context.setLocale(Locale(value));
-                            }
-                          },
-                        ),
-                      ),
-                      BlocBuilder<ThemeCubit, ThemeState>(
-                        bloc: getIt<ThemeCubit>(),
-                        builder: (context, themeState) {
-                          return ListTile(
-                            title: Text('profile.theme'.tr()),
-                            trailing: Switch(
-                              thumbIcon: themeState is! DarkTheme
-                                  ? WidgetStatePropertyAll(
-                                      Icon(Icons.light_mode))
-                                  : WidgetStatePropertyAll(
-                                      Icon(Icons.dark_mode)),
-                              value: themeState is DarkTheme,
-                              activeColor: context.primaryColor,
-                              onChanged: (value) {
-                                ThemeSwitcher.of(context).changeTheme(
-                                    theme: themeState is! DarkTheme
-                                        ? MaterialTheme('Markazi').dark()
-                                        : MaterialTheme('Markazi').light());
-                                getIt<ThemeCubit>().toggleTheme();
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      Divider(),
-                      BlocBuilder<AuthBloc, AuthState>(
-                        bloc: getIt<AuthBloc>(),
-                        builder: (context, authState) {
-                          if (authState.user != null) {
-                            return ListTile(
-                              leading: Icon(Icons.logout, color: Colors.red),
-                              title: Text(
-                                'profile.logout'.tr(),
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              onTap: () {
-                                getIt<AuthBloc>().add(LogoutEvent());
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LoginScreen(),
-                                  ),
-                                  (route) => false,
-                                );
-                              },
-                            );
-                          }
-                          return SizedBox();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                body: IndexedStack(
-                  index: state.currentIndex,
+      clipper: ThemeSwitcherCircleClipper(),
+      builder: (context, switcher) {
+        return BlocBuilder<MainCubit, MainState>(
+          bloc: getIt<MainCubit>(),
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                forceMaterialTransparency: true,
+                title: Image.asset(Assets.assetsImgsLogo),
+              ),
+              endDrawer: Drawer(
+                child: ListView(
+                  padding: EdgeInsets.zero,
                   children: [
-                    HomeScreen(),
-                    Scaffold(
-                      body: BlocBuilder<ProfileBloc, ProfileState>(
-                        bloc: getIt<ProfileBloc>(),
-                        builder: (context, state) {
-                          return state.favoredBooks.isEmpty
-                              ? Center(
-                                  child: Text('profile.no_favored_books'.tr()),
-                                )
-                              : ListView.builder(
-                                  itemCount: state.favoredBooks.length,
-                                  itemBuilder: (context, index) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListTile(
-                                      leading: Container(
-                                        padding: EdgeInsets.all(1),
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        height: 120,
-                                        width: 60,
-                                        child: Image.network(
-                                          state.favoredBooks[index].image ?? '',
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  Image.asset(
-                                                      Assets.assetsImgsLogo),
-                                        ),
-                                      ),
-                                      title: Text(
-                                        state.favoredBooks[index].name ?? '',
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                      trailing: Icon(
-                                        Icons.bookmark_remove_outlined,
-                                        color: Colors.red,
-                                      ).onTap(() {
-                                        getIt<ProfileBloc>().add(
-                                            DeleteFromFavroed(
-                                                id: state
-                                                    .favoredBooks[index].id!));
-                                      }),
-                                    ),
-                                  ),
-                                );
+                    DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: context.primaryColor,
+                      ),
+                      child: Center(
+                        child: Image.asset(
+                          Assets.assetsImgsLogo,
+                          color: Colors.white,
+                          width: 120,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('profile.language'.tr()),
+                      trailing: DropdownButton<String>(
+                        value: context.locale.languageCode,
+                        underline: const SizedBox(),
+                        items: const [
+                          DropdownMenuItem(
+                            value: 'en',
+                            child: Text('profile.english'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'ar',
+                            child: Text('profile.arabic'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            context.setLocale(Locale(value));
+                          }
                         },
                       ),
                     ),
-                    AddBookPage(),
-                    ProfileScreen(),
+                    BlocBuilder<ThemeCubit, ThemeState>(
+                      bloc: getIt<ThemeCubit>(),
+                      builder: (context, themeState) {
+                        return ListTile(
+                          title: Text('profile.theme'.tr()),
+                          trailing: Switch(
+                            thumbIcon: themeState is! DarkTheme
+                                ? const MaterialStatePropertyAll(
+                                Icon(Icons.light_mode))
+                                : const MaterialStatePropertyAll(
+                                Icon(Icons.dark_mode)),
+                            value: themeState is DarkTheme,
+                            activeColor: context.primaryColor,
+                            onChanged: (value) {
+                              ThemeSwitcher.of(context).changeTheme(
+                                theme: themeState is! DarkTheme
+                                    ? MaterialTheme('Markazi').dark()
+                                    : MaterialTheme('Markazi').light(),
+                              );
+                              getIt<ThemeCubit>().toggleTheme();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    const Divider(),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      bloc: getIt<AuthBloc>(),
+                      builder: (context, authState) {
+                        if (authState.user != null) {
+                          return ListTile(
+                            leading: const Icon(Icons.logout, color: Colors.red),
+                            title: Text(
+                              'profile.logout'.tr(),
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                            onTap: () {
+                              getIt<AuthBloc>().add(LogoutEvent());
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => LoginScreen(),
+                                ),
+                                    (route) => false,
+                              );
+                            },
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
                   ],
                 ),
-                bottomNavigationBar: BottomNavigationBar(
-                    currentIndex: state.currentIndex,
-                    onTap: (value) => getIt<MainCubit>().changeIndex(value),
-                    fixedColor: context.primaryColor,
-                    backgroundColor: context.scaffoldBackgroundColor,
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Assets.assetsSvgsHome.toSvg(),
-                          label: 'navigation.home'.tr()),
-                      BottomNavigationBarItem(
-                          icon: Assets.assetsSvgsBookMark.toSvg(),
-                          label: 'profile.my_favorite'.tr()),
-                      BottomNavigationBarItem(
-                        icon: Assets.assetsSvgsAddBook.toSvg(),
-                        label: 'Book',
-                      ),
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.person,
-                            color: Colors.black,
+              ),
+              body: IndexedStack(
+                index: state.currentIndex,
+                children: [
+                  const HomeScreen(),
+                  Scaffold(
+                    body: BlocBuilder<ProfileBloc, ProfileState>(
+                      bloc: getIt<ProfileBloc>(),
+                      builder: (context, state) {
+                        return state.favoredBooks.isEmpty
+                            ? Center(
+                          child: Text('profile.no_favored_books'.tr()),
+                        )
+                            : ListView.builder(
+                          itemCount: state.favoredBooks.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: Container(
+                                padding: const EdgeInsets.all(1),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                height: 120,
+                                width: 60,
+                                child: Image.network(
+                                  state.favoredBooks[index].image ?? '',
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(Assets.assetsImgsLogo),
+                                ),
+                              ),
+                              title: Text(
+                                state.favoredBooks[index].name ?? '',
+                                style: context.textTheme.titleMedium,
+                              ),
+                              trailing: Icon(
+                                Icons.bookmark_remove_outlined,
+                                color: Colors.red,
+                              ).onTap(() {
+                                getIt<ProfileBloc>().add(
+                                  DeleteFromFavroed(
+                                    id: state.favoredBooks[index].id!,
+                                  ),
+                                );
+                              }),
+                            ),
                           ),
-                          label: 'navigation.profile'.tr()),
-                    ]),
-              );
-            },
-          );
-        });
+                        );
+                      },
+                    ),
+                  ),
+                  const AddBookPage(),
+                  const ProfileScreen(),
+                ],
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: state.currentIndex,
+                onTap: (value) => getIt<MainCubit>().changeIndex(value),
+                fixedColor: context.primaryColor,
+                backgroundColor: context.scaffoldBackgroundColor,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Assets.assetsSvgsHome.toSvg(),
+                      label: 'navigation.home'.tr()),
+                  BottomNavigationBarItem(
+                      icon: Assets.assetsSvgsBookMark.toSvg(),
+                      label: 'profile.my_favorite'.tr()),
+                  BottomNavigationBarItem(
+                      icon: Assets.assetsSvgsAddBook.toSvg(), label: 'Book'),
+                  BottomNavigationBarItem(
+                      icon: const Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
+                      label: 'navigation.profile'.tr()),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({
-    super.key,
-  });
+  const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +224,7 @@ class SearchScreen extends StatelessWidget {
         title: Text('search.title'.tr()),
       ),
       body: Padding(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: [
             MainTextField(
@@ -236,17 +233,18 @@ class SearchScreen extends StatelessWidget {
             ),
             20.verticalSpace,
             Expanded(
-                child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, index) => ListTile(
-                leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(Assets.assetsImgsBooksAshin)),
-                title: Text('The Song of Ice And Fire'),
-                subtitle: Text('George R.R Martin'),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (context, index) => ListTile(
+                  leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(Assets.assetsImgsBooksAshin)),
+                  title: const Text('The Song of Ice And Fire'),
+                  subtitle: const Text('George R.R Martin'),
+                ),
               ),
-            ))
+            ),
           ],
         ),
       ),

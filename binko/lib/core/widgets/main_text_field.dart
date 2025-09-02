@@ -124,7 +124,7 @@ class _MainTextFieldState extends State<MainTextField>
                       ? null
                       : context.theme.hintColor.withOpacity(.7),
                   fontWeight: FontWeight.w400,
-                  fontSize: 14),
+                  fontSize: 16),
               controller: widget.controller,
               validator: widget.validator,
               onFieldSubmitted: widget.onSubmitted,

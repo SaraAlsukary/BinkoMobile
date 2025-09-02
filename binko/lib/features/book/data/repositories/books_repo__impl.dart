@@ -44,9 +44,9 @@ class BooksRepoImpl with HandlingExceptionManager implements BooksRepo {
   }
 
   @override
-  Future<Either<Failure, void>> addBook(BooksModel book) {
+  Future<Either<Failure, void>> addBook(BooksModel book, [File? imageFile]) {
     return wrapHandling(tryCall: () async {
-      return await datasource.addBook(book);
+      return await datasource.addBook(book, imageFile: imageFile);
     });
   }
 
@@ -58,7 +58,8 @@ class BooksRepoImpl with HandlingExceptionManager implements BooksRepo {
   }
 
   @override
-  Future<Either<Failure, ChapterModel>> addChapter({required int bookId, String? title, String? content, File? audioFile}) {
+  Future<Either<Failure, ChapterModel>> addChapter(
+      {required int bookId, String? title, String? content, File? audioFile}) {
     return wrapHandling(tryCall: () async {
       return await datasource.addChapter(bookId: bookId);
     });

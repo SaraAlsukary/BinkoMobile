@@ -14,6 +14,10 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
       isSupervisor: json['is_supervisor'] as bool?,
       image: json['image'] as String?,
       discriptions: json['discriptions'] as String?,
+      category: json['category'],
+      age: (json['age'] as num?)?.toInt(),
+      isReader: json['is_reader'] as bool?,
+      isAccept: json['is_accept'] as bool?,
     );
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
@@ -25,4 +29,8 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'is_supervisor': instance.isSupervisor,
       'image': instance.image,
       'discriptions': instance.discriptions,
+      'category': instance.category,
+      'age': instance.age,
+      'is_reader': instance.isReader,
+      'is_accept': instance.isAccept,
     };

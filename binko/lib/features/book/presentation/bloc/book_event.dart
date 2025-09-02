@@ -28,11 +28,11 @@ class GetBookchaptersEvent extends BookEvent {
 
 class AddBookEvent extends BookEvent {
   final BooksModel book;
-
-  const AddBookEvent(this.book);
+  final File? imageFile;
+  const AddBookEvent(this.book, this.imageFile);
 
   @override
-  List<Object> get props => [book];
+  List<Object> get props => [book,{imageFile}];
 }
 
 class ToggleLikeEvent extends BookEvent {

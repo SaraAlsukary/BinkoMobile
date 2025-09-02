@@ -25,12 +25,16 @@ mixin _$BooksModel {
   AuthorModel? get author;
   @JsonKey(name: 'description')
   String? get description;
+  @JsonKey(name: 'content')
+  String? get content; // NEW
   @JsonKey(name: 'publication_date')
   DateTime? get pubDat;
   @JsonKey(name: 'categories')
-  List<String>? get categories; // Add this
+  List<String>? get categories;
   @JsonKey(name: 'is_accept')
   bool? get isAccept;
+  @JsonKey(name: 'language')
+  String? get language;
 
   /// Create a copy of BooksModel
   /// with the given fields replaced by the non-null parameter values.
@@ -53,11 +57,14 @@ mixin _$BooksModel {
             (identical(other.author, author) || other.author == author) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.content, content) || other.content == content) &&
             (identical(other.pubDat, pubDat) || other.pubDat == pubDat) &&
             const DeepCollectionEquality()
                 .equals(other.categories, categories) &&
             (identical(other.isAccept, isAccept) ||
-                other.isAccept == isAccept));
+                other.isAccept == isAccept) &&
+            (identical(other.language, language) ||
+                other.language == language));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -69,13 +76,15 @@ mixin _$BooksModel {
       image,
       author,
       description,
+      content,
       pubDat,
       const DeepCollectionEquality().hash(categories),
-      isAccept);
+      isAccept,
+      language);
 
   @override
   String toString() {
-    return 'BooksModel(id: $id, name: $name, image: $image, author: $author, description: $description, pubDat: $pubDat, categories: $categories, isAccept: $isAccept)';
+    return 'BooksModel(id: $id, name: $name, image: $image, author: $author, description: $description, content: $content, pubDat: $pubDat, categories: $categories, isAccept: $isAccept, language: $language)';
   }
 }
 
@@ -91,9 +100,11 @@ abstract mixin class $BooksModelCopyWith<$Res> {
       @JsonKey(name: 'image') String? image,
       @JsonKey(name: 'user') AuthorModel? author,
       @JsonKey(name: 'description') String? description,
+      @JsonKey(name: 'content') String? content,
       @JsonKey(name: 'publication_date') DateTime? pubDat,
       @JsonKey(name: 'categories') List<String>? categories,
-      @JsonKey(name: 'is_accept') bool? isAccept});
+      @JsonKey(name: 'is_accept') bool? isAccept,
+      @JsonKey(name: 'language') String? language});
 
   $AuthorModelCopyWith<$Res>? get author;
 }
@@ -115,9 +126,11 @@ class _$BooksModelCopyWithImpl<$Res> implements $BooksModelCopyWith<$Res> {
     Object? image = freezed,
     Object? author = freezed,
     Object? description = freezed,
+    Object? content = freezed,
     Object? pubDat = freezed,
     Object? categories = freezed,
     Object? isAccept = freezed,
+    Object? language = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -140,6 +153,10 @@ class _$BooksModelCopyWithImpl<$Res> implements $BooksModelCopyWith<$Res> {
           ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      content: freezed == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String?,
       pubDat: freezed == pubDat
           ? _self.pubDat
           : pubDat // ignore: cast_nullable_to_non_nullable
@@ -152,6 +169,10 @@ class _$BooksModelCopyWithImpl<$Res> implements $BooksModelCopyWith<$Res> {
           ? _self.isAccept
           : isAccept // ignore: cast_nullable_to_non_nullable
               as bool?,
+      language: freezed == language
+          ? _self.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -179,9 +200,11 @@ class _BooksModel implements BooksModel {
       @JsonKey(name: 'image') this.image,
       @JsonKey(name: 'user') this.author,
       @JsonKey(name: 'description') this.description,
+      @JsonKey(name: 'content') this.content,
       @JsonKey(name: 'publication_date') this.pubDat,
       @JsonKey(name: 'categories') final List<String>? categories,
-      @JsonKey(name: 'is_accept') this.isAccept})
+      @JsonKey(name: 'is_accept') this.isAccept,
+      @JsonKey(name: 'language') this.language})
       : _categories = categories;
   factory _BooksModel.fromJson(Map<String, dynamic> json) =>
       _$BooksModelFromJson(json);
@@ -202,6 +225,10 @@ class _BooksModel implements BooksModel {
   @JsonKey(name: 'description')
   final String? description;
   @override
+  @JsonKey(name: 'content')
+  final String? content;
+// NEW
+  @override
   @JsonKey(name: 'publication_date')
   final DateTime? pubDat;
   final List<String>? _categories;
@@ -215,10 +242,12 @@ class _BooksModel implements BooksModel {
     return EqualUnmodifiableListView(value);
   }
 
-// Add this
   @override
   @JsonKey(name: 'is_accept')
   final bool? isAccept;
+  @override
+  @JsonKey(name: 'language')
+  final String? language;
 
   /// Create a copy of BooksModel
   /// with the given fields replaced by the non-null parameter values.
@@ -246,11 +275,14 @@ class _BooksModel implements BooksModel {
             (identical(other.author, author) || other.author == author) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.content, content) || other.content == content) &&
             (identical(other.pubDat, pubDat) || other.pubDat == pubDat) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
             (identical(other.isAccept, isAccept) ||
-                other.isAccept == isAccept));
+                other.isAccept == isAccept) &&
+            (identical(other.language, language) ||
+                other.language == language));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -262,13 +294,15 @@ class _BooksModel implements BooksModel {
       image,
       author,
       description,
+      content,
       pubDat,
       const DeepCollectionEquality().hash(_categories),
-      isAccept);
+      isAccept,
+      language);
 
   @override
   String toString() {
-    return 'BooksModel(id: $id, name: $name, image: $image, author: $author, description: $description, pubDat: $pubDat, categories: $categories, isAccept: $isAccept)';
+    return 'BooksModel(id: $id, name: $name, image: $image, author: $author, description: $description, content: $content, pubDat: $pubDat, categories: $categories, isAccept: $isAccept, language: $language)';
   }
 }
 
@@ -286,9 +320,11 @@ abstract mixin class _$BooksModelCopyWith<$Res>
       @JsonKey(name: 'image') String? image,
       @JsonKey(name: 'user') AuthorModel? author,
       @JsonKey(name: 'description') String? description,
+      @JsonKey(name: 'content') String? content,
       @JsonKey(name: 'publication_date') DateTime? pubDat,
       @JsonKey(name: 'categories') List<String>? categories,
-      @JsonKey(name: 'is_accept') bool? isAccept});
+      @JsonKey(name: 'is_accept') bool? isAccept,
+      @JsonKey(name: 'language') String? language});
 
   @override
   $AuthorModelCopyWith<$Res>? get author;
@@ -311,9 +347,11 @@ class __$BooksModelCopyWithImpl<$Res> implements _$BooksModelCopyWith<$Res> {
     Object? image = freezed,
     Object? author = freezed,
     Object? description = freezed,
+    Object? content = freezed,
     Object? pubDat = freezed,
     Object? categories = freezed,
     Object? isAccept = freezed,
+    Object? language = freezed,
   }) {
     return _then(_BooksModel(
       id: freezed == id
@@ -336,6 +374,10 @@ class __$BooksModelCopyWithImpl<$Res> implements _$BooksModelCopyWith<$Res> {
           ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      content: freezed == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String?,
       pubDat: freezed == pubDat
           ? _self.pubDat
           : pubDat // ignore: cast_nullable_to_non_nullable
@@ -348,6 +390,10 @@ class __$BooksModelCopyWithImpl<$Res> implements _$BooksModelCopyWith<$Res> {
           ? _self.isAccept
           : isAccept // ignore: cast_nullable_to_non_nullable
               as bool?,
+      language: freezed == language
+          ? _self.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 

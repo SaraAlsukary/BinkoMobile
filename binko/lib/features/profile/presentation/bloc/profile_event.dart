@@ -20,3 +20,7 @@ class DeleteFromFavroed extends ProfileEvent {
 
   const DeleteFromFavroed({required this.id});
 }
+class UpdateProfileInfo extends ProfileEvent {
+  final Map<String, dynamic> body;
+  const UpdateProfileInfo(this.body);
+}

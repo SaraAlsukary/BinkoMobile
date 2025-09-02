@@ -10,7 +10,7 @@ abstract class BooksRepo {
 
   Future<Either<Failure, void>> addLike(int id);
 
-  Future<Either<Failure, void>> addBook(BooksModel book);
+  Future<Either<Failure, void>> addBook(BooksModel book,[File? imageFile]);
 
   Future<Either<Failure, int>> getLikes(int id);
 

@@ -17,18 +17,36 @@ T _$identity<T>(T value) => value;
 mixin _$UserModel {
   @JsonKey(name: "id")
   int? get id;
+
   @JsonKey(name: "name")
   String? get name;
+
   @JsonKey(name: "username")
   String? get username;
+
   @JsonKey(name: "is_admin")
   bool? get isAdmin;
+
   @JsonKey(name: "is_supervisor")
   bool? get isSupervisor;
+
   @JsonKey(name: "image")
   String? get image;
+
   @JsonKey(name: "discriptions")
   String? get discriptions;
+
+  @JsonKey(name: "category")
+  dynamic get category;
+
+  @JsonKey(name: "age")
+  int? get age;
+
+  @JsonKey(name: "is_accept")
+  bool? get isAccept;
+
+  @JsonKey(name: "is_reader")
+  bool? get isReader;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -54,17 +72,34 @@ mixin _$UserModel {
                 other.isSupervisor == isSupervisor) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.discriptions, discriptions) ||
-                other.discriptions == discriptions));
+                other.discriptions == discriptions) &&
+            const DeepCollectionEquality().equals(other.category, category) &&
+            (identical(other.age, age) || other.age == age) &&
+            (identical(other.isReader, isReader) ||
+                other.isReader == isReader) &&
+            (identical(other.isAccept, isAccept) ||
+                other.isAccept == isAccept));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, username, isAdmin,
-      isSupervisor, image, discriptions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      username,
+      isAdmin,
+      isSupervisor,
+      image,
+      discriptions,
+      const DeepCollectionEquality().hash(category),
+      age,
+      isReader,
+      isAccept);
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, username: $username, isAdmin: $isAdmin, isSupervisor: $isSupervisor, image: $image, discriptions: $discriptions)';
+    return 'UserModel(id: $id, name: $name, username: $username, isAdmin: $isAdmin, isSupervisor: $isSupervisor, image: $image, discriptions: $discriptions, category: $category, age: $age, isReader: $isReader, isAccept: $isAccept)';
   }
 }
 
@@ -72,6 +107,7 @@ mixin _$UserModel {
 abstract mixin class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) =
       _$UserModelCopyWithImpl;
+
   @useResult
   $Res call(
       {@JsonKey(name: "id") int? id,
@@ -80,7 +116,11 @@ abstract mixin class $UserModelCopyWith<$Res> {
       @JsonKey(name: "is_admin") bool? isAdmin,
       @JsonKey(name: "is_supervisor") bool? isSupervisor,
       @JsonKey(name: "image") String? image,
-      @JsonKey(name: "discriptions") String? discriptions});
+      @JsonKey(name: "discriptions") String? discriptions,
+      @JsonKey(name: "category") dynamic category,
+      @JsonKey(name: "age") int? age,
+      @JsonKey(name: "is_reader") bool? isReader,
+      @JsonKey(name: "is_accept") bool? isAccept});
 }
 
 /// @nodoc
@@ -102,6 +142,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? isSupervisor = freezed,
     Object? image = freezed,
     Object? discriptions = freezed,
+    Object? category = freezed,
+    Object? age = freezed,
+    Object? isReader = freezed,
+    Object? isAccept = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -132,6 +176,22 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _self.discriptions
           : discriptions // ignore: cast_nullable_to_non_nullable
               as String?,
+      category: freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      age: freezed == age
+          ? _self.age
+          : age // ignore: cast_nullable_to_non_nullable
+              as int?,
+      isReader: freezed == isReader
+          ? _self.isReader
+          : isReader // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isAccept: freezed == isAccept
+          ? _self.isAccept
+          : isAccept // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -146,7 +206,12 @@ class _UserModel implements UserModel {
       @JsonKey(name: "is_admin") this.isAdmin,
       @JsonKey(name: "is_supervisor") this.isSupervisor,
       @JsonKey(name: "image") this.image,
-      @JsonKey(name: "discriptions") this.discriptions});
+      @JsonKey(name: "discriptions") this.discriptions,
+      @JsonKey(name: "category") this.category,
+      @JsonKey(name: "age") this.age,
+      @JsonKey(name: "is_reader") this.isReader,
+      @JsonKey(name: "is_accept") this.isAccept});
+
   factory _UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
@@ -171,6 +236,18 @@ class _UserModel implements UserModel {
   @override
   @JsonKey(name: "discriptions")
   final String? discriptions;
+  @override
+  @JsonKey(name: "category")
+  final dynamic category;
+  @override
+  @JsonKey(name: "age")
+  final int? age;
+  @override
+  @JsonKey(name: "is_reader")
+  final bool? isReader;
+  @override
+  @JsonKey(name: "is_accept")
+  final bool? isAccept;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -201,17 +278,34 @@ class _UserModel implements UserModel {
                 other.isSupervisor == isSupervisor) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.discriptions, discriptions) ||
-                other.discriptions == discriptions));
+                other.discriptions == discriptions) &&
+            const DeepCollectionEquality().equals(other.category, category) &&
+            (identical(other.age, age) || other.age == age) &&
+            (identical(other.isReader, isReader) ||
+                other.isReader == isReader) &&
+            (identical(other.isAccept, isAccept) ||
+                other.isAccept == isAccept));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, username, isAdmin,
-      isSupervisor, image, discriptions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      username,
+      isAdmin,
+      isSupervisor,
+      image,
+      discriptions,
+      const DeepCollectionEquality().hash(category),
+      age,
+      isReader,
+      isAccept);
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, username: $username, isAdmin: $isAdmin, isSupervisor: $isSupervisor, image: $image, discriptions: $discriptions)';
+    return 'UserModel(id: $id, name: $name, username: $username, isAdmin: $isAdmin, isSupervisor: $isSupervisor, image: $image, discriptions: $discriptions, category: $category, age: $age, isReader: $isReader, isAccept: $isAccept)';
   }
 }
 
@@ -221,6 +315,7 @@ abstract mixin class _$UserModelCopyWith<$Res>
   factory _$UserModelCopyWith(
           _UserModel value, $Res Function(_UserModel) _then) =
       __$UserModelCopyWithImpl;
+
   @override
   @useResult
   $Res call(
@@ -230,7 +325,11 @@ abstract mixin class _$UserModelCopyWith<$Res>
       @JsonKey(name: "is_admin") bool? isAdmin,
       @JsonKey(name: "is_supervisor") bool? isSupervisor,
       @JsonKey(name: "image") String? image,
-      @JsonKey(name: "discriptions") String? discriptions});
+      @JsonKey(name: "discriptions") String? discriptions,
+      @JsonKey(name: "category") dynamic category,
+      @JsonKey(name: "age") int? age,
+      @JsonKey(name: "is_reader") bool? isReader,
+      @JsonKey(name: "is_accept") bool? isAccept});
 }
 
 /// @nodoc
@@ -252,6 +351,10 @@ class __$UserModelCopyWithImpl<$Res> implements _$UserModelCopyWith<$Res> {
     Object? isSupervisor = freezed,
     Object? image = freezed,
     Object? discriptions = freezed,
+    Object? category = freezed,
+    Object? age = freezed,
+    Object? isReader = freezed,
+    Object? isAccept = freezed,
   }) {
     return _then(_UserModel(
       id: freezed == id
@@ -282,6 +385,22 @@ class __$UserModelCopyWithImpl<$Res> implements _$UserModelCopyWith<$Res> {
           ? _self.discriptions
           : discriptions // ignore: cast_nullable_to_non_nullable
               as String?,
+      category: freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      age: freezed == age
+          ? _self.age
+          : age // ignore: cast_nullable_to_non_nullable
+              as int?,
+      isReader: freezed == isReader
+          ? _self.isReader
+          : isReader // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isAccept: freezed == isAccept
+          ? _self.isAccept
+          : isAccept // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }

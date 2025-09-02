@@ -1,7 +1,10 @@
 import 'package:binko/core/services/dependecies.dart';
+import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:binko/features/auth/presentation/pages/complete_information_user_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
@@ -27,6 +30,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  late final AuthBloc authBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    authBloc = getIt<AuthBloc>();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,17 +104,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     : 'auth.validation.password_mismatch'.tr(),
               ),
               20.verticalSpace,
-              MainButton(
-                  text: 'auth.register'.tr(),
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      getIt<AuthBloc>().add(CreateUserEvent(
+              BlocConsumer<AuthBloc, AuthState>(
+                bloc: authBloc,
+                listener: (context, state) {
+                  if (state.status == RequestStatus.success) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CompleteInformationUserPage()),
+                    );
+                  } else if (state.status == RequestStatus.failed) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Failed to register")),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  final isLoading = state.status == RequestStatus.loading;
+                  return MainButton(
+                    text: 'auth.register'.tr(),
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                      if (formKey.currentState!.validate()) {
+                        authBloc.add(CreateUserEvent(
                           name: nameController.text,
                           username: emailController.text,
                           password: passwordController.text,
-                          confirmPassword: confirmPasswordController.text));
-                    }
-                  }),
+                          confirmPassword: confirmPasswordController.text,
+                        ));
+                      }
+                    },
+                  );
+                },
+              ),
               20.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

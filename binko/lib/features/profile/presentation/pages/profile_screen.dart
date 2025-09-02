@@ -45,22 +45,22 @@ class ProfileScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         child: state.user?.image != null
                             ? Image.network(
-                                ApiVariables().imageUrl(state.user!.image!),
-                                fit: BoxFit.cover,
-                                width: .5.sw,
-                                height: .5.sw,
-                              )
+                          ApiVariables().imageUrl(state.user!.image!),
+                          fit: BoxFit.cover,
+                          width: .5.sw,
+                          height: .5.sw,
+                        )
                             : Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(),
-                                ),
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  '+',
-                                  style: context.textTheme.titleLarge,
-                                ),
-                              ),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(),
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            '+',
+                            style: context.textTheme.titleLarge,
+                          ),
+                        ),
                       );
                     },
                   )),
@@ -71,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
                       TabBar(
                           isScrollable: true,
                           overlayColor: WidgetStateColor.resolveWith(
-                            (states) => context.primaryColor,
+                                (states) => context.primaryColor,
                           ),
                           tabs: [
                             Tab(
@@ -93,12 +93,12 @@ class ProfileScreen extends StatelessWidget {
                               var bioController = TextEditingController(
                                   text: state.user?.discriptions);
                               var userController =
-                                  TextEditingController(text: state.user?.name);
+                              TextEditingController(text: state.user?.name);
                               return Container(
                                 padding: EdgeInsets.all(25),
                                 child: Column(
                                   crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                  CrossAxisAlignment.stretch,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     MainTextField(
@@ -114,13 +114,14 @@ class ProfileScreen extends StatelessWidget {
                                     MainButton(
                                         text: 'profile.change'.tr(),
                                         onPressed: () {
-                                          getIt<AuthBloc>().add(
-                                              UpdateProfileEvent(
-                                                  name: userController.text,
-                                                  description:
-                                                      bioController.text,
-                                                  image: ''));
-                                        }),
+                                          // getIt<AuthBloc>().add();
+                                          // UpdateProfileInfo(
+                                          //     name: userController.text,
+                                          //     description:
+                                          //         bioController.text,
+                                          //     image: ''));
+                                        }
+                                    ),
                                     10.verticalSpace,
                                     MainButton(
                                         borderColor: context.primaryColor,
@@ -133,13 +134,13 @@ class ProfileScreen extends StatelessWidget {
                                             context,
                                             PageRouteBuilder(
                                               pageBuilder: (context, animation,
-                                                      secondaryAnimation) =>
+                                                  secondaryAnimation) =>
                                                   FadeTransition(
-                                                opacity: animation,
-                                                child: SplashScreen(),
-                                              ),
+                                                    opacity: animation,
+                                                    child: SplashScreen(),
+                                                  ),
                                             ),
-                                            (route) => false,
+                                                (route) => false,
                                           );
                                         },
                                         text: 'profile.logout'.tr())
@@ -153,50 +154,51 @@ class ProfileScreen extends StatelessWidget {
                             builder: (context, state) {
                               return state.favoredBooks.isEmpty
                                   ? Center(
-                                      child:
-                                          Text('profile.no_favored_books'.tr()),
-                                    )
+                                child:
+                                Text('profile.no_favored_books'.tr()),
+                              )
                                   : ListView.builder(
-                                      itemCount: state.favoredBooks.length,
-                                      itemBuilder: (context, index) => Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ListTile(
-                                          leading: Container(
-                                            padding: EdgeInsets.all(1),
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            height: 120,
-                                            width: 60,
-                                            child: Image.network(
-                                              state.favoredBooks[index].image ??
-                                                  '',
-                                              errorBuilder: (context, error,
-                                                      stackTrace) =>
-                                                  Image.asset(
-                                                      Assets.assetsImgsLogo),
-                                            ),
-                                          ),
-                                          title: Text(
-                                            state.favoredBooks[index].name ??
+                                itemCount: state.favoredBooks.length,
+                                itemBuilder: (context, index) =>
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ListTile(
+                                        leading: Container(
+                                          padding: EdgeInsets.all(1),
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                              BorderRadius.circular(15)),
+                                          height: 120,
+                                          width: 60,
+                                          child: Image.network(
+                                            state.favoredBooks[index].image ??
                                                 '',
-                                            style:
-                                                context.textTheme.titleMedium,
+                                            errorBuilder: (context, error,
+                                                stackTrace) =>
+                                                Image.asset(
+                                                    Assets.assetsImgsLogo),
                                           ),
-                                          trailing: Icon(
-                                            Icons.bookmark_remove_outlined,
-                                            color: Colors.red,
-                                          ).onTap(() {
-                                            getIt<ProfileBloc>().add(
-                                                DeleteFromFavroed(
-                                                    id: state
-                                                        .favoredBooks[index]
-                                                        .id!));
-                                          }),
                                         ),
+                                        title: Text(
+                                          state.favoredBooks[index].name ??
+                                              '',
+                                          style:
+                                          context.textTheme.titleMedium,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.bookmark_remove_outlined,
+                                          color: Colors.red,
+                                        ).onTap(() {
+                                          getIt<ProfileBloc>().add(
+                                              DeleteFromFavroed(
+                                                  id: state
+                                                      .favoredBooks[index]
+                                                      .id!));
+                                        }),
                                       ),
-                                    );
+                                    ),
+                              );
                             },
                           ),
                           SizedBox(),

@@ -69,26 +69,12 @@ class CreateUserEvent extends AuthEvent {
       CreateUserEvent.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
-class UpdateProfileEvent extends AuthEvent {
-  final String name;
-  final String description;
-  final String image;
+class UpdateProfileInfo extends AuthEvent {
+  final Map<String, dynamic> body;
+  const UpdateProfileInfo(this.body);
 
-  const UpdateProfileEvent(
-      {required this.name, required this.description, required this.image});
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'name': name,
-      'description': description,
-    };
-  }
-
-  Map<String, String> toFile() {
-    return <String, String>{
-      'image': image,
-    };
-  }
+  @override
+  List<Object> get props => [body];
 }
 
 class LogoutEvent extends AuthEvent {}

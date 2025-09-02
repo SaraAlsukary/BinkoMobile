@@ -12,6 +12,7 @@ import '../../../../core/services/dependecies.dart';
 import '../../../../core/unified_api/get_api.dart';
 import '../../../../core/unified_api/post_api.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import 'package:path/path.dart' as p;
 
 @injectable
 class RemoteBookDatasource {
@@ -82,35 +83,32 @@ class RemoteBookDatasource {
   }
 
   Future<void> addBook(BooksModel book, {File? imageFile}) async {
-    final uri = ApiVariables().addBook(book.author?.id ?? 0); // already Uri
+    final uri = ApiVariables().addBook(book.author?.id ?? 0); // يجب أن يرجع Uri
     final request = http.MultipartRequest('POST', uri);
 
     if (book.name != null) request.fields['name'] = book.name!;
     if (book.description != null)
       request.fields['description'] = book.description!;
+    if (book.content != null) request.fields['content'] = book.content!;
     if (book.pubDat != null) {
       request.fields['publication_date'] =
           book.pubDat!.toIso8601String().split('T').first;
     }
-
+    if (book.language != null) request.fields['language'] = book.language!;
     request.fields['is_accept'] = (book.isAccept ?? true).toString();
-
-    if (book.categories != null) {
-      for (final c in book.categories!) {
-        request.fields['categories[]'] = c;
-      }
+    if (book.categories != null && book.categories!.isNotEmpty) {
+      request.fields['categories'] = jsonEncode(book.categories);
     }
-
     if (imageFile != null && await imageFile.exists()) {
       final stream = http.ByteStream(imageFile.openRead());
       final length = await imageFile.length();
-      final multipartFile = http.MultipartFile('image', stream, length,
-          filename: imageFile.path.split('/').last);
+      final filename = p.basename(imageFile.path);
+      final multipartFile =
+          http.MultipartFile('image', stream, length, filename: filename);
       request.files.add(multipartFile);
     }
 
     final response = await request.send();
-    print(' rrrrrrrrrrrrrr  ${response.statusCode}');
     final respStr = await response.stream.bytesToString();
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return;

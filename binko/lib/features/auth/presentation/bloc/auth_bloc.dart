@@ -10,17 +10,16 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 @lazySingleton
 class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
-  AuthBloc()
-      : super(
-          AuthState(),
-        ) {
+  AuthBloc() : super(AuthState()) {
     on<CheckAuthEvent>((event, emit) async {
       emit(state.copyWith(status: state.status));
     });
+
     on<LoginEvent>((event, emit) async {
       Toaster.showLoading();
       final result = await AuthRepo(datasource: RemoteAuthDatasource())
@@ -34,40 +33,100 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     });
     on<LogoutEvent>((event, emit) async {
       emit(AuthState());
-      clear();
+      clear(); // لمسح الـ hydrated storage
     });
     on<CreateUserEvent>((event, emit) async {
-      Toaster.showLoading();
-      final result = await AuthRepo(datasource: RemoteAuthDatasource())
-          .createUser(event.toMap());
-      result.fold((left) {
-        Toaster.showToast(left.message);
-      }, (right) {
-        emit(state.copyWith(user: right));
-      });
-      Toaster.closeLoading();
-    });
+      try {
+        emit(state.copyWith(
+            status: RequestStatus.loading,
+            createUserState: RequestStatus.loading));
+        Toaster.showLoading();
 
-    on<UpdateProfileEvent>((event, emit) async {
+        final result = await AuthRepo(datasource: RemoteAuthDatasource())
+            .createUser(event.toMap());
+
+        result.fold(
+          (failure) {
+            Toaster.showToast(failure.message);
+            emit(state.copyWith(
+                status: RequestStatus.failed,
+                createUserState: RequestStatus.failed));
+          },
+          (user) {
+            emit(state.copyWith(
+              user: user,
+              status: RequestStatus.success,
+              createUserState: RequestStatus.success,
+            ));
+          },
+        );
+      } catch (e) {
+        emit(state.copyWith(
+            status: RequestStatus.failed,
+            createUserState: RequestStatus.failed));
+        Toaster.showToast("Something went wrong");
+      } finally {
+        Toaster.closeLoading();
+      }
+    });
+    on<UpdateProfileInfo>((event, emit) async {
+      emit(state.copyWith(updateProfileState: RequestStatus.loading));
       Toaster.showLoading();
-      final result = await AuthRepo(datasource: RemoteAuthDatasource())
-          .updateProfile(state.user!.id!, event.toMap());
-      result.fold((left) {
-        Toaster.showToast(left.message);
-      }, (right) {
-        emit(state.copyWith(user: right));
-      });
-      Toaster.closeLoading();
+      try {
+        final userId = state.user?.id;
+        if (userId == null) {
+          Toaster.showToast("User not authenticated");
+          emit(state.copyWith(updateProfileState: RequestStatus.failed));
+          Toaster.closeLoading();
+          return;
+        }
+        final result = await AuthRepo(datasource: RemoteAuthDatasource())
+            .updateProfile(userId, event.body);
+        result.fold((failure) {
+          Toaster.showToast(failure.message);
+          emit(state.copyWith(updateProfileState: RequestStatus.failed));
+        }, (updatedUser) {
+          final newAge =
+              event.body['age'] is int ? event.body['age'] as int : state.age;
+          final newDiscriptions = updatedUser.discriptions ??
+              event.body['discriptions'] ??
+              state.discriptions;
+          final newIsReader = event.body.containsKey('is_reader')
+              ? (event.body['is_reader'] as bool?)
+              : state.isReader;
+          emit(state.copyWith(
+            user: updatedUser,
+            age: newAge,
+            discriptions: newDiscriptions,
+            isReader: newIsReader,
+            updateProfileState: RequestStatus.success,
+          ));
+          Toaster.showToast("Profile updated successfully");
+        });
+      } catch (e) {
+        Toaster.showToast("Failed to update profile: $e");
+        emit(state.copyWith(updateProfileState: RequestStatus.failed));
+      } finally {
+        Toaster.closeLoading();
+      }
     });
   }
 
   @override
   AuthState? fromJson(Map<String, dynamic> json) {
-    return AuthState.fromMap(json);
+    try {
+      return AuthState.fromMap(json);
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
   Map<String, dynamic>? toJson(AuthState state) {
-    return state.toMap();
+    try {
+      return state.toMap();
+    } catch (e) {
+      return null;
+    }
   }
 }

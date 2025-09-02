@@ -1,3 +1,4 @@
+import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/features/book/data/models/books_model.dart';
 import 'package:binko/features/profile/data/repositories/profile_repo.dart';
 import 'package:bloc/bloc.dart';
@@ -8,6 +9,7 @@ import '../../../../core/services/dependecies.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 part 'profile_event.dart';
+
 part 'profile_state.dart';
 
 @lazySingleton
@@ -36,6 +38,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             favoredBooks: List.from(state.favoredBooks)
               ..removeWhere((e) => e.id == event.id)));
       });
+    });
+    on<UpdateProfileInfo>((event, emit) async {
+      emit(state.copyWith(updateProfileState: RequestStatus.loading));
+      final result = await ProfileRepo().updateProfile(event.body);
+      result.fold(
+        (failure) {
+          emit(state.copyWith(updateProfileState: RequestStatus.failed));
+        },
+        (success) {
+          emit(state.copyWith(
+            age: event.body['age'],
+            discriptions: event.body['discriptions'],
+            isReader: event.body['is_reader'],
+            updateProfileState: RequestStatus.success,
+          ));
+        },
+      );
     });
   }
 }

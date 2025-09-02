@@ -13,6 +13,10 @@ sealed class UserModel with _$UserModel {
     @JsonKey(name: "is_supervisor") bool? isSupervisor,
     @JsonKey(name: "image") String? image,
     @JsonKey(name: "discriptions") String? discriptions,
+    @JsonKey(name: "category") dynamic category,
+    @JsonKey(name: "age") int? age,
+    @JsonKey(name: "is_reader") bool? isReader,
+    @JsonKey(name: "is_accept") bool? isAccept,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
