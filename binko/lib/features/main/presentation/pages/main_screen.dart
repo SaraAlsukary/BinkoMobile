@@ -3,11 +3,12 @@ import 'package:binko/core/extensions/string_parser.dart';
 import 'package:binko/core/extensions/widget_extensions.dart';
 import 'package:binko/core/utils/theme/light/light_theme.dart';
 import 'package:binko/features/book/presentation/pages/add_book_page.dart';
-import 'package:binko/features/book/presentation/pages/book_page.dart';
+import 'package:binko/features/book/presentation/pages/all_book_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/assets.dart';
 import '../../../../core/cubit/theme_cubit.dart';
@@ -32,6 +33,22 @@ class MainScreen extends StatelessWidget {
         return BlocBuilder<MainCubit, MainState>(
           bloc: getIt<MainCubit>(),
           builder: (context, state) {
+            // Colors for nav
+            final Color selectedColor = context.primaryColor;
+            final Color unselectedColor = Colors.grey.shade600;
+
+            // helper to load svg with color
+            Widget svgIcon(String assetPath, Color color, {double size = 24}) {
+              return SvgPicture.asset(
+                assetPath,
+                width: size,
+                height: size,
+                color: color,
+                // allow SvgPicture to respect color
+                fit: BoxFit.scaleDown,
+              );
+            }
+
             return Scaffold(
               appBar: AppBar(
                 forceMaterialTransparency: true,
@@ -58,14 +75,14 @@ class MainScreen extends StatelessWidget {
                       trailing: DropdownButton<String>(
                         value: context.locale.languageCode,
                         underline: const SizedBox(),
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             value: 'en',
-                            child: Text('profile.english'),
+                            child: Text('profile.english'.tr()),
                           ),
                           DropdownMenuItem(
                             value: 'ar',
-                            child: Text('profile.arabic'),
+                            child: Text('profile.arabic'.tr()),
                           ),
                         ],
                         onChanged: (value) {
@@ -83,9 +100,9 @@ class MainScreen extends StatelessWidget {
                           trailing: Switch(
                             thumbIcon: themeState is! DarkTheme
                                 ? const MaterialStatePropertyAll(
-                                Icon(Icons.light_mode))
+                                    Icon(Icons.light_mode))
                                 : const MaterialStatePropertyAll(
-                                Icon(Icons.dark_mode)),
+                                    Icon(Icons.dark_mode)),
                             value: themeState is DarkTheme,
                             activeColor: context.primaryColor,
                             onChanged: (value) {
@@ -106,7 +123,8 @@ class MainScreen extends StatelessWidget {
                       builder: (context, authState) {
                         if (authState.user != null) {
                           return ListTile(
-                            leading: const Icon(Icons.logout, color: Colors.red),
+                            leading:
+                                const Icon(Icons.logout, color: Colors.red),
                             title: Text(
                               'profile.logout'.tr(),
                               style: const TextStyle(color: Colors.red),
@@ -118,7 +136,7 @@ class MainScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (_) => LoginScreen(),
                                 ),
-                                    (route) => false,
+                                (route) => false,
                               );
                             },
                           );
@@ -133,78 +151,139 @@ class MainScreen extends StatelessWidget {
                 index: state.currentIndex,
                 children: [
                   const HomeScreen(),
+
+                  // Favorites screen (ProfileBloc)
                   Scaffold(
                     body: BlocBuilder<ProfileBloc, ProfileState>(
                       bloc: getIt<ProfileBloc>(),
-                      builder: (context, state) {
-                        return state.favoredBooks.isEmpty
+                      builder: (context, pState) {
+                        return pState.favoredBooks.isEmpty
                             ? Center(
-                          child: Text('profile.no_favored_books'.tr()),
-                        )
+                                child: Text('profile.no_favored_books'.tr()),
+                              )
                             : ListView.builder(
-                          itemCount: state.favoredBooks.length,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              leading: Container(
-                                padding: const EdgeInsets.all(1),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                height: 120,
-                                width: 60,
-                                child: Image.network(
-                                  state.favoredBooks[index].image ?? '',
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Image.asset(Assets.assetsImgsLogo),
-                                ),
-                              ),
-                              title: Text(
-                                state.favoredBooks[index].name ?? '',
-                                style: context.textTheme.titleMedium,
-                              ),
-                              trailing: Icon(
-                                Icons.bookmark_remove_outlined,
-                                color: Colors.red,
-                              ).onTap(() {
-                                getIt<ProfileBloc>().add(
-                                  DeleteFromFavroed(
-                                    id: state.favoredBooks[index].id!,
+                                itemCount: pState.favoredBooks.length,
+                                itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListTile(
+                                    leading: Container(
+                                      padding: const EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      height: 120,
+                                      width: 60,
+                                      child: Image.network(
+                                        pState.favoredBooks[index].image ?? '',
+                                        errorBuilder: (context, error,
+                                                stackTrace) =>
+                                            Image.asset(Assets.assetsImgsLogo),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      pState.favoredBooks[index].name ?? '',
+                                      style: context.textTheme.titleMedium,
+                                    ),
+                                    trailing: Icon(
+                                      Icons.bookmark_remove_outlined,
+                                      color: Colors.red,
+                                    ).onTap(() {
+                                      getIt<ProfileBloc>().add(
+                                        DeleteFromFavroed(
+                                          id: pState.favoredBooks[index].id!,
+                                        ),
+                                      );
+                                    }),
                                   ),
-                                );
-                              }),
-                            ),
-                          ),
-                        );
+                                ),
+                              );
                       },
                     ),
                   ),
-                  const AddBookPage(),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    bloc: getIt<AuthBloc>(),
+                    builder: (context, authState) {
+                      final user = authState.user;
+                      if (user?.isReader == true) {
+                        return const AllBookPage();
+                      }
+                      return const AddBookPage();
+                    },
+                  ),
                   const ProfileScreen(),
                 ],
               ),
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: state.currentIndex,
-                onTap: (value) => getIt<MainCubit>().changeIndex(value),
-                fixedColor: context.primaryColor,
-                backgroundColor: context.scaffoldBackgroundColor,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Assets.assetsSvgsHome.toSvg(),
-                      label: 'navigation.home'.tr()),
-                  BottomNavigationBarItem(
-                      icon: Assets.assetsSvgsBookMark.toSvg(),
-                      label: 'profile.my_favorite'.tr()),
-                  BottomNavigationBarItem(
-                      icon: Assets.assetsSvgsAddBook.toSvg(), label: 'Book'),
-                  BottomNavigationBarItem(
-                      icon: const Icon(
-                        Icons.person,
-                        color: Colors.black,
+              bottomNavigationBar: BlocBuilder<AuthBloc, AuthState>(
+                bloc: getIt<AuthBloc>(),
+                builder: (context, authState) {
+                  final user = authState.user;
+                  final isReader = user?.isReader == true;
+
+                  return BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    currentIndex: state.currentIndex,
+                    onTap: (value) => getIt<MainCubit>().changeIndex(value),
+                    backgroundColor: context.scaffoldBackgroundColor,
+                    // use these (don't use fixedColor)
+                    selectedItemColor: selectedColor,
+                    unselectedItemColor: unselectedColor,
+
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: svgIcon(
+                          Assets.assetsSvgsHome,
+                          state.currentIndex == 0
+                              ? selectedColor
+                              : unselectedColor,
+                        ),
+                        label: 'navigation.home'.tr(),
                       ),
-                      label: 'navigation.profile'.tr()),
-                ],
+                      BottomNavigationBarItem(
+                        icon: svgIcon(
+                          Assets.assetsSvgsBookMark,
+                          state.currentIndex == 1
+                              ? selectedColor
+                              : unselectedColor,
+                        ),
+                        label: 'profile.my_favorite'.tr(),
+                      ),
+                      BottomNavigationBarItem(
+                        icon: isReader
+                            ? svgIcon(
+                                Assets.assetsSvgsRead,
+                                state.currentIndex == 2
+                                    ? selectedColor
+                                    : unselectedColor,
+                              )
+                            : svgIcon(
+                                Assets.assetsSvgsAddBook,
+                                state.currentIndex == 2
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                        label: isReader
+                            ? 'navigation.all_books'.tr()
+                            : 'navigation.add_book'.tr(),
+                      ),
+                      BottomNavigationBarItem(
+                        icon: user?.image != null && user!.image!.isNotEmpty
+                            ? CircleAvatar(
+                                radius: 12,
+                                backgroundImage: NetworkImage(user.image!),
+                                backgroundColor: Colors.transparent,
+                              )
+                            : Icon(
+                                Icons.person,
+                                color: state.currentIndex == 3
+                                    ? selectedColor
+                                    : unselectedColor,
+                              ),
+                        label: 'navigation.profile'.tr(),
+                      ),
+                    ],
+                  );
+                },
               ),
             );
           },
@@ -228,7 +307,12 @@ class SearchScreen extends StatelessWidget {
         child: Column(
           children: [
             MainTextField(
-              prefixIcon: Assets.assetsSvgsSearch.toSvg(),
+              prefixIcon: SvgPicture.asset(
+                Assets.assetsSvgsSearch,
+                width: 22,
+                height: 22,
+                color: Colors.grey.shade600,
+              ),
               hint: 'search.hint'.tr(),
             ),
             20.verticalSpace,

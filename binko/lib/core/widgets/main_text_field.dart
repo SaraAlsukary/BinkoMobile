@@ -124,7 +124,7 @@ class _MainTextFieldState extends State<MainTextField>
                       ? null
                       : context.theme.hintColor.withOpacity(.7),
                   fontWeight: FontWeight.w400,
-                  fontSize: 16),
+                  fontSize: 22),
               controller: widget.controller,
               validator: widget.validator,
               onFieldSubmitted: widget.onSubmitted,
@@ -187,7 +187,7 @@ class _MainTextFieldState extends State<MainTextField>
                     context.textTheme.bodyMedium!.copyWith(
                         color: context.theme.hintColor.withOpacity(.2),
                         fontWeight: FontWeight.w400,
-                        fontSize: widget.hintSize ?? 12),
+                        fontSize: widget.hintSize ?? 16),
 
                 enabledBorder: OutlineInputBorder(
                   borderRadius: widget.borderRadius ?? BorderRadius.circular(8),

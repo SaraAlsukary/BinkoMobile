@@ -7,9 +7,10 @@ part 'comment_model.g.dart';
 sealed class CommentModel with _$CommentModel {
   const factory CommentModel({
     @JsonKey(name: 'id') int? id,
-    @JsonKey(name: 'name') String? name,
-    @JsonKey(name: 'book') String? book,
     @JsonKey(name: 'comment') String? comment,
+    @JsonKey(name: 'user_name') String? userName,
+    @JsonKey(name: 'user_image') String? userImage,
+    @JsonKey(name: 'reply_count') int? replyCount,
   }) = _CommentModel;
 
   factory CommentModel.fromJson(Map<String, dynamic> json) =>

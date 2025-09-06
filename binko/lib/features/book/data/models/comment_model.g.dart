@@ -9,15 +9,17 @@ part of 'comment_model.dart';
 _CommentModel _$CommentModelFromJson(Map<String, dynamic> json) =>
     _CommentModel(
       id: (json['id'] as num?)?.toInt(),
-      name: json['name'] as String?,
-      book: json['book'] as String?,
       comment: json['comment'] as String?,
+      userName: json['user_name'] as String?,
+      userImage: json['user_image'] as String?,
+      replyCount: (json['reply_count'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CommentModelToJson(_CommentModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'book': instance.book,
       'comment': instance.comment,
+      'user_name': instance.userName,
+      'user_image': instance.userImage,
+      'reply_count': instance.replyCount,
     };

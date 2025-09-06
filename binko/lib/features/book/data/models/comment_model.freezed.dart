@@ -17,12 +17,14 @@ T _$identity<T>(T value) => value;
 mixin _$CommentModel {
   @JsonKey(name: 'id')
   int? get id;
-  @JsonKey(name: 'name')
-  String? get name;
-  @JsonKey(name: 'book')
-  String? get book;
   @JsonKey(name: 'comment')
   String? get comment;
+  @JsonKey(name: 'user_name')
+  String? get userName;
+  @JsonKey(name: 'user_image')
+  String? get userImage;
+  @JsonKey(name: 'reply_count')
+  int? get replyCount;
 
   /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
@@ -41,18 +43,23 @@ mixin _$CommentModel {
         (other.runtimeType == runtimeType &&
             other is CommentModel &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.book, book) || other.book == book) &&
-            (identical(other.comment, comment) || other.comment == comment));
+            (identical(other.comment, comment) || other.comment == comment) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.userImage, userImage) ||
+                other.userImage == userImage) &&
+            (identical(other.replyCount, replyCount) ||
+                other.replyCount == replyCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, book, comment);
+  int get hashCode =>
+      Object.hash(runtimeType, id, comment, userName, userImage, replyCount);
 
   @override
   String toString() {
-    return 'CommentModel(id: $id, name: $name, book: $book, comment: $comment)';
+    return 'CommentModel(id: $id, comment: $comment, userName: $userName, userImage: $userImage, replyCount: $replyCount)';
   }
 }
 
@@ -64,9 +71,10 @@ abstract mixin class $CommentModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
-      @JsonKey(name: 'book') String? book,
-      @JsonKey(name: 'comment') String? comment});
+      @JsonKey(name: 'comment') String? comment,
+      @JsonKey(name: 'user_name') String? userName,
+      @JsonKey(name: 'user_image') String? userImage,
+      @JsonKey(name: 'reply_count') int? replyCount});
 }
 
 /// @nodoc
@@ -82,27 +90,32 @@ class _$CommentModelCopyWithImpl<$Res> implements $CommentModelCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
-    Object? book = freezed,
     Object? comment = freezed,
+    Object? userName = freezed,
+    Object? userImage = freezed,
+    Object? replyCount = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: freezed == name
-          ? _self.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      book: freezed == book
-          ? _self.book
-          : book // ignore: cast_nullable_to_non_nullable
-              as String?,
       comment: freezed == comment
           ? _self.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
+      userName: freezed == userName
+          ? _self.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userImage: freezed == userImage
+          ? _self.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      replyCount: freezed == replyCount
+          ? _self.replyCount
+          : replyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -112,9 +125,10 @@ class _$CommentModelCopyWithImpl<$Res> implements $CommentModelCopyWith<$Res> {
 class _CommentModel implements CommentModel {
   const _CommentModel(
       {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'name') this.name,
-      @JsonKey(name: 'book') this.book,
-      @JsonKey(name: 'comment') this.comment});
+      @JsonKey(name: 'comment') this.comment,
+      @JsonKey(name: 'user_name') this.userName,
+      @JsonKey(name: 'user_image') this.userImage,
+      @JsonKey(name: 'reply_count') this.replyCount});
   factory _CommentModel.fromJson(Map<String, dynamic> json) =>
       _$CommentModelFromJson(json);
 
@@ -122,14 +136,17 @@ class _CommentModel implements CommentModel {
   @JsonKey(name: 'id')
   final int? id;
   @override
-  @JsonKey(name: 'name')
-  final String? name;
-  @override
-  @JsonKey(name: 'book')
-  final String? book;
-  @override
   @JsonKey(name: 'comment')
   final String? comment;
+  @override
+  @JsonKey(name: 'user_name')
+  final String? userName;
+  @override
+  @JsonKey(name: 'user_image')
+  final String? userImage;
+  @override
+  @JsonKey(name: 'reply_count')
+  final int? replyCount;
 
   /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
@@ -152,18 +169,23 @@ class _CommentModel implements CommentModel {
         (other.runtimeType == runtimeType &&
             other is _CommentModel &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.book, book) || other.book == book) &&
-            (identical(other.comment, comment) || other.comment == comment));
+            (identical(other.comment, comment) || other.comment == comment) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.userImage, userImage) ||
+                other.userImage == userImage) &&
+            (identical(other.replyCount, replyCount) ||
+                other.replyCount == replyCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, book, comment);
+  int get hashCode =>
+      Object.hash(runtimeType, id, comment, userName, userImage, replyCount);
 
   @override
   String toString() {
-    return 'CommentModel(id: $id, name: $name, book: $book, comment: $comment)';
+    return 'CommentModel(id: $id, comment: $comment, userName: $userName, userImage: $userImage, replyCount: $replyCount)';
   }
 }
 
@@ -177,9 +199,10 @@ abstract mixin class _$CommentModelCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
-      @JsonKey(name: 'book') String? book,
-      @JsonKey(name: 'comment') String? comment});
+      @JsonKey(name: 'comment') String? comment,
+      @JsonKey(name: 'user_name') String? userName,
+      @JsonKey(name: 'user_image') String? userImage,
+      @JsonKey(name: 'reply_count') int? replyCount});
 }
 
 /// @nodoc
@@ -196,27 +219,32 @@ class __$CommentModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
-    Object? book = freezed,
     Object? comment = freezed,
+    Object? userName = freezed,
+    Object? userImage = freezed,
+    Object? replyCount = freezed,
   }) {
     return _then(_CommentModel(
       id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: freezed == name
-          ? _self.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      book: freezed == book
-          ? _self.book
-          : book // ignore: cast_nullable_to_non_nullable
-              as String?,
       comment: freezed == comment
           ? _self.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
+      userName: freezed == userName
+          ? _self.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userImage: freezed == userImage
+          ? _self.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      replyCount: freezed == replyCount
+          ? _self.replyCount
+          : replyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }

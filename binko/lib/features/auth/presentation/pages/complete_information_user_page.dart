@@ -93,13 +93,14 @@ class _CompleteInformationUserPageState
                   hint: "Age",
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 25.h),
+                SizedBox(height: 20.h),
                 MainTextField(
+                  maxLines: 4,
                   hintSize: 24.sp,
                   controller: bioController,
                   hint: "Bio / Description",
                 ),
-                SizedBox(height: 25.h),
+                SizedBox(height: 20.h),
                 Row(
                   children: [
                     Text(

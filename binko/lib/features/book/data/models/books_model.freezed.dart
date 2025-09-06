@@ -26,7 +26,7 @@ mixin _$BooksModel {
   @JsonKey(name: 'description')
   String? get description;
   @JsonKey(name: 'content')
-  String? get content; // NEW
+  String? get content;
   @JsonKey(name: 'publication_date')
   DateTime? get pubDat;
   @JsonKey(name: 'categories')
@@ -227,7 +227,6 @@ class _BooksModel implements BooksModel {
   @override
   @JsonKey(name: 'content')
   final String? content;
-// NEW
   @override
   @JsonKey(name: 'publication_date')
   final DateTime? pubDat;

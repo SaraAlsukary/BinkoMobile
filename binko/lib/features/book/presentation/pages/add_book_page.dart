@@ -157,7 +157,7 @@ class _AddBookPageState extends State<AddBookPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => MyBookPage()));
+                                      builder: (context) => MyBookPage()));
                             },
                             child: Text('My Books'),
                           ),
@@ -171,7 +171,7 @@ class _AddBookPageState extends State<AddBookPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => AllBookPage()));
+                                      builder: (context) => AllBookPage()));
                             },
                             child: Text('All Books'),
                           ),

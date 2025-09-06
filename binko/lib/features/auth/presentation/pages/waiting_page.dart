@@ -16,7 +16,7 @@ class _WaitingPageState extends State<WaitingPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 6), () {
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -48,6 +48,12 @@ class _WaitingPageState extends State<WaitingPage> {
               SizedBox(height: 12.h),
               Text(
                 "waiting.description".tr(),
+                style: TextStyle(fontSize: 20.sp),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 12.h),
+              Text(
+                "waiting.description2".tr(),
                 style: TextStyle(fontSize: 20.sp),
                 textAlign: TextAlign.center,
               ),

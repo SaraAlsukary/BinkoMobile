@@ -60,15 +60,23 @@ class ApiVariables {
 
   Uri getAllComments() => _mainUri(path: 'getallcomment/');
 
+  Uri getBookComments(int bookId) => _mainUri(path: 'book/$bookId/comments/');
+
   Uri getBookChapters(int id) => _mainUri(path: 'books/$id/chapters');
 
   Uri getFavoredBooks(int id) => _mainUri(path: 'favorite-books/$id/');
+
+  Uri getCommentReplies(int commentId) =>
+      _mainUri(path: 'getreplys/$commentId/');
 
   Uri addToFavored() => _mainUri(path: 'add-favorite/');
 
   Uri addCategory() => _mainUri(path: 'add-category/');
 
   Uri addBook(int userId) => _mainUri(path: 'books/add/$userId/');
+
+  Uri addReplyToComment(int commentId, int userId) =>
+      _mainUri(path: 'addreply/$commentId/$userId/');
 
   Uri addChapter(int bookId) => _mainUri(path: 'books/$bookId/add-chapter/');
 }

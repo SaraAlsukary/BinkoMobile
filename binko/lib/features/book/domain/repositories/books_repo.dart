@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:binko/core/error/failures.dart';
 import 'package:binko/features/book/data/models/books_model.dart';
 import 'package:binko/features/book/data/models/chapter_model.dart';
+import 'package:binko/features/book/data/models/comment_model.dart';
+import 'package:binko/features/book/data/models/reply_model.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class BooksRepo {
@@ -24,4 +26,22 @@ abstract class BooksRepo {
     String? content,
     File? audioFile,
   });
+
+  Future<Either<Failure, List<CommentModel>>> getCommentsByBookId(int bookId);
+
+  Future<Either<Failure, void>> addComment({
+    required int userId,
+    required int bookId,
+    required String comment,
+  });
+
+  Future<Either<Failure, List<ReplyModel>>> getRepliesByCommentId(int commentId);
+
+  Future<Either<Failure, void>> addReply({
+    required int userId,
+    required int commentId,
+    required String content,
+    int? parentId,
+  });
+
 }

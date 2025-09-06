@@ -18,11 +18,15 @@ import '../../features/book/data/repositories/books_repo__impl.dart' as _i446;
 import '../../features/book/domain/repositories/books_repo.dart' as _i125;
 import '../../features/book/domain/usecases/add_book_usecase.dart' as _i874;
 import '../../features/book/domain/usecases/add_chapter_usecase.dart' as _i742;
+import '../../features/book/domain/usecases/add_comments_usecase.dart' as _i76;
+import '../../features/book/domain/usecases/add_reply_usecase.dart' as _i250;
 import '../../features/book/domain/usecases/get_all_books_usecase.dart'
     as _i140;
 import '../../features/book/domain/usecases/get_book_chapters_usecase.dart'
     as _i371;
+import '../../features/book/domain/usecases/get_comments_usecase.dart' as _i775;
 import '../../features/book/domain/usecases/get_my_book_usecase.dart' as _i68;
+import '../../features/book/domain/usecases/get_replies_usecase.dart' as _i331;
 import '../../features/book/presentation/bloc/book_bloc.dart' as _i86;
 import '../../features/category/data/datasources/categories_datasource.dart'
     as _i276;
@@ -61,6 +65,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i469.ProfileBloc>(() => _i469.ProfileBloc());
     gh.factory<_i125.BooksRepo>(() =>
         _i446.BooksRepoImpl(datasource: gh<_i1028.RemoteBookDatasource>()));
+    gh.factory<_i250.AddReplyUsecase>(
+        () => _i250.AddReplyUsecase(gh<_i125.BooksRepo>()));
+    gh.factory<_i331.GetRepliesUsecase>(
+        () => _i331.GetRepliesUsecase(gh<_i125.BooksRepo>()));
+    gh.singleton<_i76.AddCommentUsecase>(
+        () => _i76.AddCommentUsecase(gh<_i125.BooksRepo>()));
+    gh.singleton<_i775.GetCommentsUsecase>(
+        () => _i775.GetCommentsUsecase(gh<_i125.BooksRepo>()));
     gh.lazySingleton<_i742.AddChapterUseCase>(
         () => _i742.AddChapterUseCase(gh<_i125.BooksRepo>()));
     gh.factory<_i874.AddBookUsecase>(
@@ -71,17 +83,21 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i371.GetBookChaptersUsecase(repo: gh<_i125.BooksRepo>()));
     gh.factory<_i68.GetMyBooksUsecase>(
         () => _i68.GetMyBooksUsecase(repo: gh<_i125.BooksRepo>()));
-    gh.factory<_i471.CategoriesRepository>(() => _i175.CategoriesRepoImpl(
-        datasource: gh<_i276.RemoteCategoryDatasource>()));
-    gh.factory<_i908.AddCategoryUsecase>(
-        () => _i908.AddCategoryUsecase(gh<_i471.CategoriesRepository>()));
     gh.lazySingleton<_i86.BookBloc>(() => _i86.BookBloc(
+          gh<_i76.AddCommentUsecase>(),
+          gh<_i775.GetCommentsUsecase>(),
           gh<_i742.AddChapterUseCase>(),
           gh<_i68.GetMyBooksUsecase>(),
           gh<_i874.AddBookUsecase>(),
           gh<_i140.GetAllBooksUsecase>(),
           gh<_i371.GetBookChaptersUsecase>(),
+          gh<_i331.GetRepliesUsecase>(),
+          gh<_i250.AddReplyUsecase>(),
         ));
+    gh.factory<_i471.CategoriesRepository>(() => _i175.CategoriesRepoImpl(
+        datasource: gh<_i276.RemoteCategoryDatasource>()));
+    gh.factory<_i908.AddCategoryUsecase>(
+        () => _i908.AddCategoryUsecase(gh<_i471.CategoriesRepository>()));
     gh.factory<_i273.GetAllCategoriesUsecase>(() =>
         _i273.GetAllCategoriesUsecase(
             repository: gh<_i471.CategoriesRepository>()));

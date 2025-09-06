@@ -1,6 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:binko/core/extensions/widget_extensions.dart';
 import 'package:binko/features/book/data/models/books_model.dart';
+import 'package:binko/features/book/presentation/pages/add_chapter_page.dart';
+import 'package:binko/features/book/presentation/pages/comments_page.dart';
+import 'package:binko/features/book/presentation/pages/show_title_chapter_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +16,7 @@ import '../../../../core/unified_api/api_variables.dart';
 import '../../../profile/presentation/bloc/profile_bloc.dart';
 import '../bloc/book_bloc.dart';
 import 'book_page.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({
@@ -28,10 +31,80 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  bool _isLiking =
+      false; // UI-only flag to prevent rapid taps and show progress
+
   @override
   void didChangeDependencies() {
     getIt<BookBloc>().add(GetLikesCount(id: widget.book.id!));
     super.didChangeDependencies();
+  }
+
+  void _openAddCommentSheet(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 20,
+            right: 20,
+            top: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Add Comment", style: context.textTheme.titleLarge),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  hintText: "Write your comment...",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  if (controller.text.trim().isEmpty) return;
+
+                  getIt<BookBloc>().add(AddCommentEvent(
+                    bookId: widget.book.id!,
+                    comment: controller.text.trim(),
+                    userId: widget.book.author!.id!,
+                  ));
+
+                  Navigator.pop(context);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Comment added ✅")),
+                  );
+                },
+                child:
+                    const Text("Send", style: TextStyle(color: Colors.white)),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -42,7 +115,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios_new,
               color: Colors.white,
             )),
@@ -53,23 +126,50 @@ class _DetailsScreenState extends State<DetailsScreen> {
           style: context.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         actions: [
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Icon(
-                Icons.edit,
-                color: context.theme.colorScheme.onPrimary,
-              ),
-            ),
+          BlocBuilder<AuthBloc, AuthState>(
+            bloc: getIt<AuthBloc>(),
+            builder: (context, authState) {
+              final user = authState.user;
+              if (user != null && user.isReader == false) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddChapterPage(
+                                  bookId: widget.book.id!,
+                                )));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: Icon(
+                      Icons.edit,
+                      color: context.theme.colorScheme.onPrimary,
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ],
       ),
       body: BlocListener<BookBloc, BookState>(
         bloc: getIt<BookBloc>(),
+        // listen when chapters changed OR likes changed (likesCount / likedBooks)
         listenWhen: (previous, current) =>
-            previous.chapters.length != current.chapters.length,
-        listener: (context, state) {},
+            previous.chapters.length != current.chapters.length ||
+            previous.likesCount != current.likesCount ||
+            previous.likedBooks != current.likedBooks,
+        listener: (context, state) {
+          // When we receive any update from the bloc (chapters or likes),
+          // stop the UI liking progress indicator if it was active.
+          if (_isLiking) {
+            setState(() {
+              _isLiking = false;
+            });
+          }
+        },
         child: Container(
           width: 1.sw,
           height: 1.sh,
@@ -95,9 +195,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           borderRadius: BorderRadius.circular(15)),
                       child: Image.network(
                         ApiVariables().imageUrl(widget.book.image ?? ''),
-                        errorBuilder: (context, error, stackTrace) => Center(
-                          child: Icon(Icons.error),
-                        ),
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Center(child: Icon(Icons.error)),
                       ),
                     ),
                   ),
@@ -108,7 +207,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ),
                   10.verticalSpace,
                   Text(
-                    'Action',
+                    widget.book.categories?.toString() ?? 'action',
                     style: context.textTheme.titleSmall
                         ?.copyWith(color: Colors.grey),
                   ),
@@ -147,7 +246,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         bloc: getIt<ProfileBloc>(),
                         builder: (context, state) {
                           return Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(border: Border.all()),
                             child: Row(
                               children: [
@@ -177,28 +276,52 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           );
                         },
                       ),
+                      // Like button container
                       BlocBuilder<BookBloc, BookState>(
                         bloc: getIt<BookBloc>(),
                         builder: (context, state) {
-                          print(state.likedBooks);
-                          return Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(border: Border.all()),
-                            child: Row(
-                              children: [
-                                Text('Like'),
-                                10.horizontalSpace,
-                                state.likedBooks.contains(widget.book.id!)
-                                    ? Assets.assetsSvgsLoveFill.toSvg()
-                                    : Assets.assetsSvgsLoveNotFill.toSvg(),
-                              ],
+                          final isLiked =
+                              state.likedBooks.contains(widget.book.id!);
+                          return GestureDetector(
+                            onTap: () {
+                              if (_isLiking) return; // prevent rapid taps
+                              setState(() {
+                                _isLiking = true;
+                              });
+                              getIt<BookBloc>()
+                                  .add(ToggleLikeEvent(id: widget.book.id!));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(border: Border.all()),
+                              child: Row(
+                                children: [
+                                  const Text('Like'),
+                                  10.horizontalSpace,
+                                  // show spinner while processing, otherwise svg icon
+                                  if (_isLiking)
+                                    SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor: AlwaysStoppedAnimation(
+                                              context.primaryColor),
+                                        ),
+                                      ),
+                                    )
+                                  else
+                                    (isLiked
+                                        ? Assets.assetsSvgsLoveFill.toSvg()
+                                        : Assets.assetsSvgsLoveNotFill.toSvg()),
+                                ],
+                              ),
                             ),
                           );
                         },
-                      ).onTap(() {
-                        getIt<BookBloc>()
-                            .add(ToggleLikeEvent(id: widget.book.id!));
-                      }),
+                      ),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(context, PageRouteBuilder(
@@ -207,14 +330,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               return ScaleTransition(
                                 scale: animation,
                                 child: BookPage(
-                                   book: widget.book,
+                                  book: widget.book,
                                 ),
                               );
                             },
                           ));
                         },
                         child: Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(border: Border.all()),
                           child: Row(
                             children: [
@@ -230,7 +353,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ],
                   ),
                   25.verticalSpace,
-                  Container(
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ShowTitleChapterPage(
+                            book: widget.book,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         color: context.primaryColor,
@@ -240,8 +374,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         'book.summary'.tr(),
                         style: context.textTheme.titleMedium
                             ?.copyWith(color: Colors.white),
-                      )),
-                  25.verticalSpace,
+                      ),
+                    ),
+                  ),
                   Text(
                     widget.book.description ?? 'book.default_description'.tr(),
                     maxLines: 6,
@@ -250,37 +385,46 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   25.verticalSpace,
                   Row(
                     children: [
-                      Container(
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: context.primaryColor,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Text(
-                            'book.comments'.tr(),
-                            style: context.textTheme.titleMedium
-                                ?.copyWith(color: Colors.white),
-                          )),
-                      Spacer(),
-                      Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: context.primaryColor.withAlpha(80),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Text(
-                            'book.add_comment'.tr(),
-                            style: context.textTheme.titleMedium
-                                ?.copyWith(color: Colors.white),
-                          )),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CommentsPage(
+                                        book: widget.book,
+                                      )));
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: context.primaryColor,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Text(
+                              'book.comments'.tr(),
+                              style: context.textTheme.titleMedium
+                                  ?.copyWith(color: Colors.white),
+                            )),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          _openAddCommentSheet(context);
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: context.primaryColor.withAlpha(80),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Text(
+                              'book.add_comment'.tr(),
+                              style: context.textTheme.titleMedium,
+                            )),
+                      ),
                     ],
                   ),
                   25.verticalSpace,
-                  Text(
-                    widget.book.description ?? 'book.default_description'.tr(),
-                    maxLines: 6,
-                    textAlign: TextAlign.justify,
-                  )
                 ],
               )),
         ),

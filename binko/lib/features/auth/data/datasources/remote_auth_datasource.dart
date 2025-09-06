@@ -37,18 +37,24 @@ class RemoteAuthDatasource {
       uri: ApiVariables().updateProfile(id),
       body: body,
       fromJson: (s) {
+        print("🔹 Raw response = $s"); // اطبع الرد الخام
         try {
           final decoded = jsonDecode(s);
+          print("🔹 Decoded = $decoded"); // اطبع بعد الـ jsonDecode
 
           final userJson = (decoded is Map && decoded.containsKey('user'))
               ? decoded['user']
               : decoded;
+
+          print("🔹 userJson = $userJson"); // اطبع الجزء اللي عم تستخدمه مع الموديل
+
           return UserModel.fromJson(Map<String, dynamic>.from(userJson));
         } catch (e) {
           throw Exception(
               'Failed to parse updateProfile response: $e -- raw: $s');
         }
       },
+
     );
 
     return await putApi.callRequest();

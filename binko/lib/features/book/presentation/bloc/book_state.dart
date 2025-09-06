@@ -12,8 +12,20 @@ class BookState {
   final RequestStatus addBookStatus;
   final RequestStatus addChapterStatus;
   final ChapterModel? addedChapter;
+  final List<CommentModel> comments;
+  final RequestStatus commentsStatus;
+  final RequestStatus addCommentStatus;
+  final List<ReplyModel> replies;
+  final RequestStatus repliesStatus;
+  final RequestStatus addReplyStatus;
 
-  BookState({
+  const BookState({
+    this.replies = const [],
+    this.repliesStatus = RequestStatus.init,
+    this.addReplyStatus = RequestStatus.init,
+    this.comments = const [],
+    this.commentsStatus = RequestStatus.init,
+    this.addCommentStatus = RequestStatus.init,
     this.myBooks = const [],
     this.books = const [],
     this.chapters = const [],
@@ -27,28 +39,40 @@ class BookState {
   });
 
   BookState copyWith({
+    List<ReplyModel>? replies,
+    RequestStatus? repliesStatus,
+    RequestStatus? addReplyStatus,
     List<BooksModel>? books,
-    List<ChapterModel>? chapters,
-    RequestStatus? chapterStatus,
-    List<int>? likedBooks,
-    int? likesCount,
-    RequestStatus? addBookStatus,
     List<BooksModel>? myBooks,
     RequestStatus? myBooksStatus,
+    List<ChapterModel>? chapters,
+    RequestStatus? chapterStatus,
     RequestStatus? addChapterStatus,
     ChapterModel? addedChapter,
+    RequestStatus? addBookStatus,
+    int? likesCount,
+    List<int>? likedBooks,
+    List<CommentModel>? comments,
+    RequestStatus? commentsStatus,
+    RequestStatus? addCommentStatus,
   }) {
     return BookState(
+      replies: replies ?? this.replies,
+      repliesStatus: repliesStatus ?? this.repliesStatus,
+      addReplyStatus: addReplyStatus ?? this.addReplyStatus,
       books: books ?? this.books,
-      chapters: chapters ?? this.chapters,
-      chapterStatus: chapterStatus ?? this.chapterStatus,
-      likedBooks: likedBooks ?? this.likedBooks,
-      likesCount: likesCount ?? this.likesCount,
       myBooks: myBooks ?? this.myBooks,
       myBooksStatus: myBooksStatus ?? this.myBooksStatus,
-      addBookStatus: addBookStatus ?? this.addBookStatus,
+      chapters: chapters ?? this.chapters,
+      chapterStatus: chapterStatus ?? this.chapterStatus,
       addChapterStatus: addChapterStatus ?? this.addChapterStatus,
       addedChapter: addedChapter ?? this.addedChapter,
+      addBookStatus: addBookStatus ?? this.addBookStatus,
+      likesCount: likesCount ?? this.likesCount,
+      likedBooks: likedBooks ?? this.likedBooks,
+      comments: comments ?? this.comments,
+      commentsStatus: commentsStatus ?? this.commentsStatus,
+      addCommentStatus: addCommentStatus ?? this.addCommentStatus,
     );
   }
 }

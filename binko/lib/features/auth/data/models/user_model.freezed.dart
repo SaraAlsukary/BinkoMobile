@@ -17,36 +17,26 @@ T _$identity<T>(T value) => value;
 mixin _$UserModel {
   @JsonKey(name: "id")
   int? get id;
-
   @JsonKey(name: "name")
   String? get name;
-
   @JsonKey(name: "username")
   String? get username;
-
   @JsonKey(name: "is_admin")
   bool? get isAdmin;
-
   @JsonKey(name: "is_supervisor")
   bool? get isSupervisor;
-
   @JsonKey(name: "image")
   String? get image;
-
   @JsonKey(name: "discriptions")
   String? get discriptions;
-
   @JsonKey(name: "category")
   dynamic get category;
-
   @JsonKey(name: "age")
   int? get age;
-
-  @JsonKey(name: "is_accept")
-  bool? get isAccept;
-
   @JsonKey(name: "is_reader")
   bool? get isReader;
+  @JsonKey(name: "is_accept")
+  bool? get isAccept;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -107,7 +97,6 @@ mixin _$UserModel {
 abstract mixin class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) =
       _$UserModelCopyWithImpl;
-
   @useResult
   $Res call(
       {@JsonKey(name: "id") int? id,
@@ -211,7 +200,6 @@ class _UserModel implements UserModel {
       @JsonKey(name: "age") this.age,
       @JsonKey(name: "is_reader") this.isReader,
       @JsonKey(name: "is_accept") this.isAccept});
-
   factory _UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
@@ -315,7 +303,6 @@ abstract mixin class _$UserModelCopyWith<$Res>
   factory _$UserModelCopyWith(
           _UserModel value, $Res Function(_UserModel) _then) =
       __$UserModelCopyWithImpl;
-
   @override
   @useResult
   $Res call(

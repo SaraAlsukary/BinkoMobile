@@ -1,5 +1,6 @@
 import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:binko/features/auth/presentation/pages/register_screen.dart';
 import 'package:binko/features/main/presentation/pages/main_screen.dart';
 import 'package:binko/features/profile/presentation/pages/profile_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -103,17 +104,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: context.primaryColor,
                           fontWeight: FontWeight.bold),
                     ).onTap(() {
-                      Navigator.pushAndRemoveUntil(
+                      Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
                                   ScaleTransition(
                             scale: animation,
-                            child: ProfileScreen(),
+                            child: RegisterScreen(),
                           ),
                         ),
-                        (route) => false,
+                        // (route) => false,
                       );
                       // Navigator.pushReplacement(
                       //     context,

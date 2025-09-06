@@ -28,11 +28,11 @@ sealed class BooksModel with _$BooksModel {
     @JsonKey(name: 'image') String? image,
     @JsonKey(name: 'user') AuthorModel? author,
     @JsonKey(name: 'description') String? description,
-    @JsonKey(name: 'content') String? content,        // NEW
+    @JsonKey(name: 'content') String? content,
     @JsonKey(name: 'publication_date') DateTime? pubDat,
     @JsonKey(name: 'categories') List<String>? categories,
     @JsonKey(name: 'is_accept') bool? isAccept,
-    @JsonKey(name: 'language') String? language,      // NEW
+    @JsonKey(name: 'language') String? language,
   }) = _BooksModel;
 
   factory BooksModel.fromJson(Map<String, dynamic> json) =>
