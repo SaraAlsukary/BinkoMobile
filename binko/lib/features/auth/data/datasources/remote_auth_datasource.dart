@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 
 import '../../../../core/unified_api/api_variables.dart';
 import '../../../../core/unified_api/post_api.dart';
@@ -32,31 +35,57 @@ class RemoteAuthDatasource {
     return await postApi.callRequest();
   }
 
-  Future<UserModel> updateProfile(int id, BodyMap body) async {
-    final putApi = PutApi(
-      uri: ApiVariables().updateProfile(id),
-      body: body,
-      fromJson: (s) {
-        print("🔹 Raw response = $s"); // اطبع الرد الخام
-        try {
-          final decoded = jsonDecode(s);
-          print("🔹 Decoded = $decoded"); // اطبع بعد الـ jsonDecode
 
-          final userJson = (decoded is Map && decoded.containsKey('user'))
-              ? decoded['user']
-              : decoded;
 
-          print("🔹 userJson = $userJson"); // اطبع الجزء اللي عم تستخدمه مع الموديل
+  Future<UserModel> updateProfile(int id, BodyMap body, {File? image}) async {
+    try {
+      if (image != null) {
+        final formData = FormData.fromMap({
+          ...body,
+          "image": await MultipartFile.fromFile(
+            image.path,
+            filename: image.path.split("/").last,
+          ),
+        });
 
-          return UserModel.fromJson(Map<String, dynamic>.from(userJson));
-        } catch (e) {
-          throw Exception(
-              'Failed to parse updateProfile response: $e -- raw: $s');
-        }
-      },
+        final response = await Dio().put(
+          ApiVariables().updateProfile(id).toString(),
+          data: formData,
+          options: Options(
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          ),
+        );
 
-    );
 
-    return await putApi.callRequest();
+        final decoded = response.data;
+        final userJson = (decoded is Map && decoded.containsKey('user'))
+            ? decoded['user']
+            : decoded;
+
+        return UserModel.fromJson(Map<String, dynamic>.from(userJson));
+      } else {
+
+        final putApi = PutApi(
+          uri: ApiVariables().updateProfile(id),
+          body: body,
+          fromJson: (s) {
+            print("🔹 Raw response = $s");
+            final decoded = jsonDecode(s);
+
+            final userJson = (decoded is Map && decoded.containsKey('user'))
+                ? decoded['user']
+                : decoded;
+
+            return UserModel.fromJson(Map<String, dynamic>.from(userJson));
+          },
+        );
+
+        return await putApi.callRequest();
+      }
+    } catch (e) {
+      throw Exception("❌ updateProfile failed: $e");
+    }
   }
 }

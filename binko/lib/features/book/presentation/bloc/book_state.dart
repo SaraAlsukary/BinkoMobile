@@ -18,8 +18,12 @@ class BookState {
   final List<ReplyModel> replies;
   final RequestStatus repliesStatus;
   final RequestStatus addReplyStatus;
+  final List<BooksModel> categoryBooks;
+  final RequestStatus categoryBooksStatus;
 
   const BookState({
+    this.categoryBooks = const [],
+    this.categoryBooksStatus = RequestStatus.init,
     this.replies = const [],
     this.repliesStatus = RequestStatus.init,
     this.addReplyStatus = RequestStatus.init,
@@ -38,25 +42,28 @@ class BookState {
     this.addedChapter,
   });
 
-  BookState copyWith({
-    List<ReplyModel>? replies,
-    RequestStatus? repliesStatus,
-    RequestStatus? addReplyStatus,
-    List<BooksModel>? books,
-    List<BooksModel>? myBooks,
-    RequestStatus? myBooksStatus,
-    List<ChapterModel>? chapters,
-    RequestStatus? chapterStatus,
-    RequestStatus? addChapterStatus,
-    ChapterModel? addedChapter,
-    RequestStatus? addBookStatus,
-    int? likesCount,
-    List<int>? likedBooks,
-    List<CommentModel>? comments,
-    RequestStatus? commentsStatus,
-    RequestStatus? addCommentStatus,
-  }) {
+  BookState copyWith(
+      {List<ReplyModel>? replies,
+      RequestStatus? repliesStatus,
+      RequestStatus? addReplyStatus,
+      List<BooksModel>? books,
+      List<BooksModel>? myBooks,
+      RequestStatus? myBooksStatus,
+      List<ChapterModel>? chapters,
+      RequestStatus? chapterStatus,
+      RequestStatus? addChapterStatus,
+      ChapterModel? addedChapter,
+      RequestStatus? addBookStatus,
+      int? likesCount,
+      List<int>? likedBooks,
+      List<CommentModel>? comments,
+      RequestStatus? commentsStatus,
+      RequestStatus? addCommentStatus,
+      List<BooksModel>? categoryBooks,
+      RequestStatus? categoryBooksStatus}) {
     return BookState(
+      categoryBooks: categoryBooks ?? this.categoryBooks,
+      categoryBooksStatus: categoryBooksStatus ?? this.categoryBooksStatus,
       replies: replies ?? this.replies,
       repliesStatus: repliesStatus ?? this.repliesStatus,
       addReplyStatus: addReplyStatus ?? this.addReplyStatus,

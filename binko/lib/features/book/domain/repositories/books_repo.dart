@@ -43,5 +43,5 @@ abstract class BooksRepo {
     required String content,
     int? parentId,
   });
-
+  Future<Either<Failure, List<BooksModel>>> getBooksByCategory(int categoryId);
 }

@@ -10,3 +10,9 @@ abstract class HomeEvent extends Equatable {
 class GetHomeCategoriesEvent extends HomeEvent {}
 
 class GetHomeBooksEvent extends HomeEvent {}
+
+class GetBooksByCategoryEvent extends HomeEvent {
+  final int categoryId;
+
+  const GetBooksByCategoryEvent(this.categoryId);
+}

@@ -94,7 +94,8 @@ class _CommentsPageState extends State<CommentsPage> {
                         if (user == null) {
                           Navigator.pop(ctx);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Login required to reply')),
+                            const SnackBar(
+                                content: Text('Login required to reply')),
                           );
                           return;
                         }
@@ -117,7 +118,8 @@ class _CommentsPageState extends State<CommentsPage> {
                           const SnackBar(content: Text('Reply added ✅')),
                         );
                       },
-                      child: const Text('Send', style: TextStyle(color: Colors.white)),
+                      child: const Text('Send',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ],
@@ -201,7 +203,8 @@ class _CommentsPageState extends State<CommentsPage> {
                     children: [
                       Text(
                         c.comment ?? '',
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -222,17 +225,19 @@ class _CommentsPageState extends State<CommentsPage> {
                             const SizedBox(width: 12),
                             TextButton(
                               onPressed: () {
-                                // navigate to replies page which will load replies for this comment
                                 if (c.id != null) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => RepliesPage(commentId: c.id!, commentText: c.comment ?? ''),
+                                      builder: (_) => RepliesPage(
+                                          commentId: c.id!,
+                                          commentText: c.comment ?? ''),
                                     ),
                                   );
                                 }
                               },
-                              child: const Text('More', style: TextStyle(color: Colors.white)),
+                              child: const Text('More',
+                                  style: TextStyle(color: Colors.white)),
                             ),
                           ],
                         ],

@@ -10,7 +10,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/extensions/widget_extensions.dart';
 import '../../../../core/services/dependecies.dart';
-import '../../../category/presentation/pages/category_screen.dart';
+import '../../../category/presentation/pages/category_books_page.dart';
 import '../bloc/home_bloc.dart';
 import '../widgets/book_widget.dart';
 import '../widgets/container_widget.dart';
@@ -25,9 +25,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    super.initState();
     getIt<HomeBloc>().add(GetHomeBooksEvent());
     getIt<HomeBloc>().add(GetHomeCategoriesEvent());
-    super.initState();
   }
 
   @override
@@ -47,65 +47,73 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'home.categories'.tr(),
                   style: context.textTheme.titleLarge,
-                ).onTap(() {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CategoryScreen(),
-                      ));
-                }),
+                ),
               ),
               SliverToBoxAdapter(
                 child: BlocBuilder<HomeBloc, HomeState>(
                   bloc: getIt<HomeBloc>(),
                   buildWhen: (previous, current) =>
-                      previous.categoriesStatus != current.categoriesStatus,
+                  previous.categoriesStatus != current.categoriesStatus,
                   builder: (context, state) {
                     return SizedBox(
                       height: .12.sh,
                       child: ListView.builder(
-                          itemCount:
-                              state.categoriesStatus == RequestStatus.loading
-                                  ? 6
-                                  : state.categories.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Skeletonizer(
-                              ignorePointers: true,
-                              enabled: state.categoriesStatus ==
-                                  RequestStatus.loading,
-                              child: state.categoriesStatus ==
-                                      RequestStatus.loading
-                                  ? Skeletonizer(
-                                      enabled: true,
-                                      child: MultiColorBorderContainer(
-                                          child: Text('home.action'.tr())),
-                                    )
-                                  : MultiColorBorderContainer(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            state.categories[index].name!,
-                                            style: context.textTheme.titleLarge,
-                                          ).center().expand(),
-                                          if (state.categories[index].file !=
-                                              null)
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Image.network(
-                                                ApiVariables().imageUrl(state
-                                                    .categories[index].file!),
-                                                fit: BoxFit.scaleDown,
-                                              ),
-                                            ).expand()
-                                        ],
-                                      ),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.categoriesStatus == RequestStatus.loading
+                            ? 6
+                            : state.categories.length,
+                        itemBuilder: (context, index) {
+                          final category = state.categoriesStatus == RequestStatus.loading
+                              ? null
+                              : state.categories[index];
+
+                          return Skeletonizer(
+                            ignorePointers: true,
+                            enabled: state.categoriesStatus == RequestStatus.loading,
+                            child: GestureDetector(
+                              onTap: state.categoriesStatus == RequestStatus.loading
+                                  ? null
+                                  : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => CategoryBooksScreen(
+                                      categoryId: category!.id!,
+                                      categoryName: category.name!,
                                     ),
-                            );
-                          }),
+                                  ),
+                                );
+                              },
+                              child: state.categoriesStatus == RequestStatus.loading
+                                  ? Skeletonizer(
+                                enabled: true,
+                                child: MultiColorBorderContainer(
+                                  child: Text('home.action'.tr()),
+                                ),
+                              )
+                                  : MultiColorBorderContainer(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      category!.name!,
+                                      style: context.textTheme.titleLarge,
+                                    ).center().expand(),
+                                    if (category.file != null)
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.network(
+                                          ApiVariables().imageUrl(category.file!),
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                      ).expand(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
@@ -123,38 +131,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: BlocBuilder<HomeBloc, HomeState>(
                   bloc: getIt<HomeBloc>(),
                   buildWhen: (previous, current) =>
-                      previous.booksStatus != current.booksStatus,
+                  previous.booksStatus != current.booksStatus,
                   builder: (context, state) {
-                    return state.booksStatus == RequestStatus.success &&
-                            state.books.isEmpty
-                        ? Center(
-                            child: Text('error.no_books'.tr()),
-                          )
-                        : GridView.builder(
-                            itemCount:
-                                state.booksStatus == RequestStatus.loading
-                                    ? 6
-                                    : state.books.length,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 0.6,
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10),
-                            itemBuilder: (context, index) {
-                              return Skeletonizer(
-                                  enabled: state.booksStatus ==
-                                      RequestStatus.loading,
-                                  ignorePointers: true,
-                                  child: BookWidget(
-                                    book: state.booksStatus ==
-                                            RequestStatus.loading
-                                        ? BooksModel()
-                                        : state.books[index],
-                                  ));
-                            },
-                          );
+                    if (state.booksStatus == RequestStatus.loading) {
+                      return GridView.builder(
+                        itemCount: 6,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 0.6,
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                        itemBuilder: (context, index) => Skeletonizer(
+                          enabled: true,
+                          child: BookWidget(book: BooksModel()),
+                        ),
+                      );
+                    }
+
+                    if (state.booksStatus == RequestStatus.success && state.books.isEmpty) {
+                      return Center(
+                        child: Text('error.no_books'.tr()),
+                      );
+                    }
+
+                    return GridView.builder(
+                      itemCount: state.books.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.6,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                      ),
+                      itemBuilder: (context, index) => BookWidget(book: state.books[index]),
+                    );
                   },
                 ),
               ),

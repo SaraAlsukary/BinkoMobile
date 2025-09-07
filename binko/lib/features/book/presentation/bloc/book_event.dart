@@ -11,11 +11,11 @@ abstract class BookEvent extends Equatable {
 class GetAllBooksEvent extends BookEvent {}
 
 class GetBooksByCategoryEvent extends BookEvent {
-  final int id;
+  final int categoryId;
+  const GetBooksByCategoryEvent({required this.categoryId});
 
-  const GetBooksByCategoryEvent({
-    required this.id,
-  });
+  @override
+  List<Object> get props => [categoryId];
 }
 
 class GetBookchaptersEvent extends BookEvent {

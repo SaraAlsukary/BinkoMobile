@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:binko/core/constants/assets.dart';
 import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/core/widgets/main_button.dart';
@@ -10,6 +12,7 @@ import 'package:binko/core/services/dependecies.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:binko/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CompleteInformationUserPage extends StatefulWidget {
   const CompleteInformationUserPage({super.key});
@@ -25,6 +28,8 @@ class _CompleteInformationUserPageState
   final bioController = TextEditingController();
   final ValueNotifier<bool> isReader = ValueNotifier(false);
   late final AuthBloc authBloc;
+
+  File? pickedImage;
 
   @override
   void initState() {
@@ -44,6 +49,16 @@ class _CompleteInformationUserPageState
     bioController.dispose();
     isReader.dispose();
     super.dispose();
+  }
+
+  Future<void> pickPicture() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        pickedImage = File(image.path);
+      });
+    }
   }
 
   @override
@@ -76,65 +91,93 @@ class _CompleteInformationUserPageState
           },
           builder: (context, state) {
             final isLoading = state.updateProfileState == RequestStatus.loading;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                .1.sh.verticalSpace,
-                FractionallySizedBox(
-                  widthFactor: .7,
-                  child: LottieBuilder.asset(
-                    Assets.assetsLottieFilesFlyingBook,
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-                MainTextField(
-                  hintSize: 24.sp,
-                  controller: ageController,
-                  hint: "Age",
-                  keyboardType: TextInputType.number,
-                ),
-                SizedBox(height: 20.h),
-                MainTextField(
-                  maxLines: 4,
-                  hintSize: 24.sp,
-                  controller: bioController,
-                  hint: "Bio / Description",
-                ),
-                SizedBox(height: 20.h),
-                Row(
-                  children: [
-                    Text(
-                      "Are you a reader?",
-                      style: TextStyle(fontSize: 24.sp),
+            final currentUser = state.user ?? authBloc.state.user;
+
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  .05.sh.verticalSpace,
+                  Center(
+                    child: GestureDetector(
+                      onTap: pickPicture,
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: pickedImage != null
+                            ? FileImage(pickedImage!)
+                            : (currentUser?.image != null &&
+                            currentUser!.image!.isNotEmpty)
+                            ? NetworkImage(currentUser.image!)
+                            : null,
+                        child: pickedImage == null &&
+                            (currentUser?.image == null ||
+                                currentUser!.image!.isEmpty)
+                            ? const Icon(Icons.add_a_photo, size: 40)
+                            : null,
+                      ),
                     ),
-                    SizedBox(width: 25.w),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: isReader,
-                      builder: (context, value, _) {
-                        return Switch(
-                          value: value,
-                          onChanged: (val) => isReader.value = val,
-                        );
-                      },
-                    )
-                  ],
-                ),
-                SizedBox(height: 35.h),
-                isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : MainButton(
-                        width: 140.w,
-                        text: "Save",
-                        onPressed: () {
-                          final body = {
-                            "age": int.tryParse(ageController.text) ?? 0,
-                            "discriptions": bioController.text,
-                            "is_reader": isReader.value
-                          };
-                          authBloc.add(UpdateProfileInfo(body));
+                  ),
+                  SizedBox(height: 25.h),
+                  FractionallySizedBox(
+                    widthFactor: .7,
+                    child: LottieBuilder.asset(
+                      Assets.assetsLottieFilesFlyingBook,
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                  MainTextField(
+                    hintSize: 24.sp,
+                    controller: ageController,
+                    hint: "Age",
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 20.h),
+                  MainTextField(
+                    maxLines: 4,
+                    hintSize: 24.sp,
+                    controller: bioController,
+                    hint: "Bio / Description",
+                  ),
+                  SizedBox(height: 20.h),
+                  Row(
+                    children: [
+                      Text(
+                        "Are you a reader?",
+                        style: TextStyle(fontSize: 24.sp),
+                      ),
+                      SizedBox(width: 25.w),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: isReader,
+                        builder: (context, value, _) {
+                          return Switch(
+                            value: value,
+                            onChanged: (val) => isReader.value = val,
+                          );
                         },
                       )
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 35.h),
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : MainButton(
+                    width: 140.w,
+                    text: "Save",
+                    onPressed: () {
+                      final body = {
+                        "age": int.tryParse(ageController.text) ?? 0,
+                        "discriptions": bioController.text,
+                        "is_reader": isReader.value,
+                      };
+
+                      authBloc.add(
+                        UpdateProfileInfo(body, image: pickedImage),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20.h),
+                ],
+              ),
             );
           },
         ),

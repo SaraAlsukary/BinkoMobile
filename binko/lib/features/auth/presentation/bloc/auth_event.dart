@@ -4,7 +4,7 @@ abstract class AuthEvent extends Equatable {
   const AuthEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoginEvent extends AuthEvent {
@@ -71,10 +71,12 @@ class CreateUserEvent extends AuthEvent {
 
 class UpdateProfileInfo extends AuthEvent {
   final Map<String, dynamic> body;
-  const UpdateProfileInfo(this.body);
+  final File? image;
+
+  const UpdateProfileInfo(this.body, {this.image});
 
   @override
-  List<Object> get props => [body];
+  List<Object?> get props => [body, image!];
 }
 
 class LogoutEvent extends AuthEvent {}

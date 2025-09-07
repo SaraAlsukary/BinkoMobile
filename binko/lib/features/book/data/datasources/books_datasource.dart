@@ -206,10 +206,9 @@ class RemoteBookDatasource {
   }
 
   Future<List<ReplyModel>> getRepliesByCommentId(int commentId) async {
-    final uri = ApiVariables().getCommentReplies(commentId); // تأكد اسم الدالة
+    final uri = ApiVariables().getCommentReplies(commentId);
     final response = await http.get(uri, headers: {
       'Accept': 'application/json',
-
     });
 
     print('getReplies -> status: ${response.statusCode}');
@@ -220,8 +219,6 @@ class RemoteBookDatasource {
     }
 
     final decoded = jsonDecode(response.body);
-
-    // احصل على القائمة بغض النظر عن شكل الـ JSON
     List rawList = [];
     if (decoded is List) {
       rawList = decoded;
@@ -231,8 +228,6 @@ class RemoteBookDatasource {
       } else if (decoded.containsKey('data')) {
         rawList = decoded['data'] as List;
       } else {
-        // في بعض الـ APIs بيرجّع map يحتوي على قائمة فقط داخل قيمة غير متوقعة
-        // لو ما بنعرف الشكل نطبع ونرمي خطأ أرجع فاضي
         print('getReplies -> unexpected map keys: ${decoded.keys.toList()}');
         return [];
       }
@@ -244,47 +239,38 @@ class RemoteBookDatasource {
     print('getReplies -> server list length: ${rawList.length}');
     if (rawList.isNotEmpty) {
       final first = rawList.first;
-      if (first is Map) print('getReplies -> first item keys: ${first.keys.toList()}');
+      if (first is Map)
+        print('getReplies -> first item keys: ${first.keys.toList()}');
     }
 
-    // نحول كل عنصر بشكل آمن (نصلح أنواع الحقول إن لزم)
     final List<ReplyModel> replies = rawList.map<ReplyModel>((e) {
       final Map<String, dynamic> item = Map<String, dynamic>.from(e as Map);
 
-      // 1) نضيف comment id صراحة حتى لو السيرفر ما رجعه
       item['comment'] = commentId;
 
-      // 2) map server keys to our model keys (نحط النسخ اللي النموذج قد يتوقعها)
-      // إذا السيرفر يرجع 'user' (مثال: 1) نضمن وجود 'user' و 'user_id'
       if (item.containsKey('user')) {
         item['user'] = item['user'];
-        item['user_id'] = item['user']; // لبعض النماذج قد تتوقع user_id
+        item['user_id'] = item['user'];
       }
-      // اسم المستخدم
+
       if (item.containsKey('name')) {
         item['user_name'] = item['name'];
         item['name'] = item['name'];
       }
-      // صورة المستخدم
       if (item.containsKey('image')) {
         item['user_image'] = item['image'];
         item['image'] = item['image'];
       }
-
-      // 3) نصلح parent لو جاي كسلسلة
       if (item.containsKey('parent') && item['parent'] is String) {
         final parsed = int.tryParse(item['parent']);
         if (parsed != null) item['parent'] = parsed;
       }
-
-      // 4) الآن نستدعي fromJson (الـ model يجب يحاول قراءة الحقول المتوفرة)
       return ReplyModel.fromJson(item);
     }).toList();
 
     print('getReplies -> parsed replies count: ${replies.length}');
     return replies;
   }
-
 
   Future<void> addReply({
     required int userId,
@@ -303,4 +289,17 @@ class RemoteBookDatasource {
     return await postApi.callRequest();
   }
 
+  Future<List<BooksModel>> getBooksByCategory(int categoryId) async {
+    final getApi = GetApi(
+      uri: ApiVariables().getBooksByCategory(categoryId),
+      fromJson: (s) {
+        final decoded = jsonDecode(s);
+        return List<BooksModel>.from(
+          decoded.map((e) => BooksModel.fromJson(e)).toList(),
+        );
+      },
+    );
+
+    return await getApi.callRequest();
+  }
 }

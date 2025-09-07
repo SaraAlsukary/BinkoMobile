@@ -39,22 +39,5 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               ..removeWhere((e) => e.id == event.id)));
       });
     });
-    on<UpdateProfileInfo>((event, emit) async {
-      emit(state.copyWith(updateProfileState: RequestStatus.loading));
-      final result = await ProfileRepo().updateProfile(event.body);
-      result.fold(
-        (failure) {
-          emit(state.copyWith(updateProfileState: RequestStatus.failed));
-        },
-        (success) {
-          emit(state.copyWith(
-            age: event.body['age'],
-            discriptions: event.body['discriptions'],
-            isReader: event.body['is_reader'],
-            updateProfileState: RequestStatus.success,
-          ));
-        },
-      );
-    });
   }
 }

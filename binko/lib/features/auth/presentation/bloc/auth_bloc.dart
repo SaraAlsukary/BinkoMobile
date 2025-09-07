@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:binko/core/utils/request_status.dart';
 import 'package:binko/core/utils/toaster.dart';
@@ -19,13 +20,12 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     on<CheckAuthEvent>((event, emit) async {
       emit(state.copyWith(status: state.status));
     });
-
     on<LoginEvent>((event, emit) async {
       Toaster.showLoading();
       final result = await AuthRepo(datasource: RemoteAuthDatasource())
           .login(event.toMap());
       result.fold((left) {
-        Toaster.showToast(left.message);
+        Toaster.showToast(left.message, isError: true);
       }, (right) {
         emit(state.copyWith(status: RequestStatus.success, user: right));
       });
@@ -33,7 +33,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     });
     on<LogoutEvent>((event, emit) async {
       emit(AuthState());
-      clear(); // لمسح الـ hydrated storage
+      clear();
     });
     on<CreateUserEvent>((event, emit) async {
       try {
@@ -47,7 +47,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
 
         result.fold(
           (failure) {
-            Toaster.showToast(failure.message);
+            Toaster.showToast(failure.message, isError: true);
             emit(state.copyWith(
                 status: RequestStatus.failed,
                 createUserState: RequestStatus.failed));
@@ -72,6 +72,7 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     on<UpdateProfileInfo>((event, emit) async {
       emit(state.copyWith(updateProfileState: RequestStatus.loading));
       Toaster.showLoading();
+
       try {
         final userId = state.user?.id;
         if (userId == null) {
@@ -80,25 +81,19 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
           Toaster.closeLoading();
           return;
         }
+
         final result = await AuthRepo(datasource: RemoteAuthDatasource())
-            .updateProfile(userId, event.body);
+            .updateProfile(userId, event.body, image: event.image);
+
         result.fold((failure) {
-          Toaster.showToast(failure.message);
+          Toaster.showToast(failure.message, isError: true);
           emit(state.copyWith(updateProfileState: RequestStatus.failed));
         }, (updatedUser) {
-          final newAge =
-              event.body['age'] is int ? event.body['age'] as int : state.age;
-          final newDiscriptions = updatedUser.discriptions ??
-              event.body['discriptions'] ??
-              state.discriptions;
-          final newIsReader = event.body.containsKey('is_reader')
-              ? (event.body['is_reader'] as bool?)
-              : state.isReader;
           emit(state.copyWith(
             user: updatedUser,
-            age: newAge,
-            discriptions: newDiscriptions,
-            isReader: newIsReader,
+            age: updatedUser.age,
+            discriptions: updatedUser.discriptions,
+            isReader: updatedUser.isReader,
             updateProfileState: RequestStatus.success,
           ));
           Toaster.showToast("Profile updated successfully");

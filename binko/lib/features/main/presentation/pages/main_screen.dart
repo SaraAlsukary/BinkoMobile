@@ -4,6 +4,7 @@ import 'package:binko/core/extensions/widget_extensions.dart';
 import 'package:binko/core/utils/theme/light/light_theme.dart';
 import 'package:binko/features/book/presentation/pages/add_book_page.dart';
 import 'package:binko/features/book/presentation/pages/all_book_page.dart';
+import 'package:binko/features/book/presentation/pages/book_details_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,18 +34,15 @@ class MainScreen extends StatelessWidget {
         return BlocBuilder<MainCubit, MainState>(
           bloc: getIt<MainCubit>(),
           builder: (context, state) {
-            // Colors for nav
             final Color selectedColor = context.primaryColor;
             final Color unselectedColor = Colors.grey.shade600;
 
-            // helper to load svg with color
             Widget svgIcon(String assetPath, Color color, {double size = 24}) {
               return SvgPicture.asset(
                 assetPath,
                 width: size,
                 height: size,
                 color: color,
-                // allow SvgPicture to respect color
                 fit: BoxFit.scaleDown,
               );
             }
@@ -59,9 +57,7 @@ class MainScreen extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   children: [
                     DrawerHeader(
-                      decoration: BoxDecoration(
-                        color: context.primaryColor,
-                      ),
+                      decoration: BoxDecoration(color: context.primaryColor),
                       child: Center(
                         child: Image.asset(
                           Assets.assetsImgsLogo,
@@ -151,8 +147,6 @@ class MainScreen extends StatelessWidget {
                 index: state.currentIndex,
                 children: [
                   const HomeScreen(),
-
-                  // Favorites screen (ProfileBloc)
                   Scaffold(
                     body: BlocBuilder<ProfileBloc, ProfileState>(
                       bloc: getIt<ProfileBloc>(),
@@ -163,40 +157,52 @@ class MainScreen extends StatelessWidget {
                               )
                             : ListView.builder(
                                 itemCount: pState.favoredBooks.length,
-                                itemBuilder: (context, index) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListTile(
-                                    leading: Container(
-                                      padding: const EdgeInsets.all(1),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      height: 120,
-                                      width: 60,
-                                      child: Image.network(
-                                        pState.favoredBooks[index].image ?? '',
-                                        errorBuilder: (context, error,
-                                                stackTrace) =>
-                                            Image.asset(Assets.assetsImgsLogo),
-                                      ),
-                                    ),
-                                    title: Text(
-                                      pState.favoredBooks[index].name ?? '',
-                                      style: context.textTheme.titleMedium,
-                                    ),
-                                    trailing: Icon(
-                                      Icons.bookmark_remove_outlined,
-                                      color: Colors.red,
-                                    ).onTap(() {
-                                      getIt<ProfileBloc>().add(
-                                        DeleteFromFavroed(
-                                          id: pState.favoredBooks[index].id!,
+                                itemBuilder: (context, index) {
+                                  final book = pState.favoredBooks[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListTile(
+                                      leading: Container(
+                                        padding: const EdgeInsets.all(1),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                         ),
-                                      );
-                                    }),
-                                  ),
-                                ),
+                                        height: 120,
+                                        width: 60,
+                                        child: Image.network(
+                                          book.image ?? '',
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Image.asset(
+                                                      Assets.assetsImgsLogo),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        book.name ?? '',
+                                        style: context.textTheme.titleMedium,
+                                      ),
+                                      trailing: Icon(
+                                        Icons.bookmark_remove_outlined,
+                                        color: Colors.red,
+                                      ).onTap(() {
+                                        getIt<ProfileBloc>().add(
+                                          DeleteFromFavroed(id: book.id!),
+                                        );
+                                      }),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                DetailsScreen(book: book),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                               );
                       },
                     ),
@@ -225,10 +231,8 @@ class MainScreen extends StatelessWidget {
                     currentIndex: state.currentIndex,
                     onTap: (value) => getIt<MainCubit>().changeIndex(value),
                     backgroundColor: context.scaffoldBackgroundColor,
-                    // use these (don't use fixedColor)
                     selectedItemColor: selectedColor,
                     unselectedItemColor: unselectedColor,
-
                     items: [
                       BottomNavigationBarItem(
                         icon: svgIcon(
@@ -267,18 +271,12 @@ class MainScreen extends StatelessWidget {
                             : 'navigation.add_book'.tr(),
                       ),
                       BottomNavigationBarItem(
-                        icon: user?.image != null && user!.image!.isNotEmpty
-                            ? CircleAvatar(
-                                radius: 12,
-                                backgroundImage: NetworkImage(user.image!),
-                                backgroundColor: Colors.transparent,
-                              )
-                            : Icon(
-                                Icons.person,
-                                color: state.currentIndex == 3
-                                    ? selectedColor
-                                    : unselectedColor,
-                              ),
+                        icon: Icon(
+                          Icons.person,
+                          color: state.currentIndex == 3
+                              ? selectedColor
+                              : unselectedColor,
+                        ),
                         label: 'navigation.profile'.tr(),
                       ),
                     ],
@@ -289,49 +287,6 @@ class MainScreen extends StatelessWidget {
           },
         );
       },
-    );
-  }
-}
-
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('search.title'.tr()),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            MainTextField(
-              prefixIcon: SvgPicture.asset(
-                Assets.assetsSvgsSearch,
-                width: 22,
-                height: 22,
-                color: Colors.grey.shade600,
-              ),
-              hint: 'search.hint'.tr(),
-            ),
-            20.verticalSpace,
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 10,
-                itemBuilder: (context, index) => ListTile(
-                  leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(Assets.assetsImgsBooksAshin)),
-                  title: const Text('The Song of Ice And Fire'),
-                  subtitle: const Text('George R.R Martin'),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

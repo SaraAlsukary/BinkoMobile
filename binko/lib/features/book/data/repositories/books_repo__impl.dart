@@ -99,7 +99,8 @@ class BooksRepoImpl with HandlingExceptionManager implements BooksRepo {
   }
 
   @override
-  Future<Either<Failure, List<ReplyModel>>> getRepliesByCommentId(int commentId) {
+  Future<Either<Failure, List<ReplyModel>>> getRepliesByCommentId(
+      int commentId) {
     return wrapHandling(tryCall: () async {
       return await datasource.getRepliesByCommentId(commentId);
     });
@@ -122,5 +123,10 @@ class BooksRepoImpl with HandlingExceptionManager implements BooksRepo {
     });
   }
 
-
+  @override
+  Future<Either<Failure, List<BooksModel>>> getBooksByCategory(int categoryId) {
+    return wrapHandling(tryCall: () async {
+      return await datasource.getBooksByCategory(categoryId);
+    });
+  }
 }

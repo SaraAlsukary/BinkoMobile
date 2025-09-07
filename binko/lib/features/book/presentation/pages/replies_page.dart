@@ -96,8 +96,9 @@ class _RepliesPageState extends State<RepliesPage> {
                 }
 
                 final replies = state.replies.where((r) {
-                  if (r.commentId == null)
+                  if (r.commentId == null) {
                     return true;
+                  }
                   return r.commentId.toString() == widget.commentId.toString();
                 }).toList();
 

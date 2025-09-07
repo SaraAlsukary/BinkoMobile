@@ -38,6 +38,9 @@ class ApiVariables {
 
   Uri createUser() => _mainUri(path: 'create-user/');
 
+  Uri getBooksByCategory(int categoryId) =>
+      _mainUri(path: 'books/category/$categoryId/');
+
   Uri logout() => _mainUri(path: 'logout');
 
   Uri updateProfile(int id) => _mainUri(path: 'update-user/$id/');

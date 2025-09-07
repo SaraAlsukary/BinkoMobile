@@ -14,6 +14,7 @@ import 'package:binko/features/book/domain/usecases/add_comments_usecase.dart';
 import 'package:binko/features/book/domain/usecases/add_reply_usecase.dart';
 import 'package:binko/features/book/domain/usecases/get_all_books_usecase.dart';
 import 'package:binko/features/book/domain/usecases/get_book_chapters_usecase.dart';
+import 'package:binko/features/book/domain/usecases/get_books_by_category_usecase.dart';
 import 'package:binko/features/book/domain/usecases/get_comments_usecase.dart';
 import 'package:binko/features/book/domain/usecases/get_my_book_usecase.dart';
 import 'package:binko/features/book/domain/usecases/get_replies_usecase.dart';
@@ -36,8 +37,10 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   final GetCommentsUsecase getCommentsUsecase;
   final GetRepliesUsecase getRepliesUsecase;
   final AddReplyUsecase addReplyUsecase;
+  final GetBooksByCategoryUsecase getBooksByCategoryUsecase;
 
   BookBloc(
+    this.getBooksByCategoryUsecase,
     this.addCommentUsecase,
     this.getCommentsUsecase,
     this.addChapterUseCase,
@@ -213,6 +216,25 @@ class BookBloc extends Bloc<BookEvent, BookState> {
           emit(state.copyWith(addReplyStatus: RequestStatus.success));
           add(GetRepliesEvent(commentId: event.commentId));
         },
+      );
+    });
+
+    on<GetBooksByCategoryEvent>((event, emit) async {
+      emit(state.copyWith(
+        categoryBooksStatus: RequestStatus.loading,
+        categoryBooks: [],
+      ));
+
+      final result = await getBooksByCategoryUsecase.call(
+        GetBooksByCategoryParams(event.categoryId),
+      );
+
+      result.fold(
+        (_) => emit(state.copyWith(categoryBooksStatus: RequestStatus.failed)),
+        (books) => emit(state.copyWith(
+          categoryBooksStatus: RequestStatus.success,
+          categoryBooks: books,
+        )),
       );
     });
   }

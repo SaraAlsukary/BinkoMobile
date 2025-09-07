@@ -10,32 +10,38 @@ import '../extensions/context_extensions.dart';
 class Toaster {
   Toaster._();
 
-  static void showToast(String text, {bool isError = true}) {
+  static void showToast(String text, {bool isError = false}) {
     BotToast.showCustomText(toastBuilder: (cancelFunc) {
       return Card(
-          child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(isError ? Icons.warning_amber_rounded : Icons.done,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isError ? Icons.warning_amber_rounded : Icons.done,
                 color: isError ? const Color(0xff9F1C48) : Colors.green,
-                size: 30.sp),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(text,
+                size: 30.sp,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  text,
                   style: TextStyle(
                     color: isError ? const Color(0xff9F1C48) : Colors.green,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
-                  maxLines: 5),
-            ),
-          ],
+                  maxLines: 5,
+                ),
+              ),
+            ],
+          ),
         ),
-      ));
+      );
     });
   }
+
 
   static void showLoading() {
     BotToast.showCustomLoading(

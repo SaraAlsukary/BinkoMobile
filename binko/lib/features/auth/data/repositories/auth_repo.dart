@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
@@ -21,9 +23,9 @@ class AuthRepo with HandlingExceptionManager {
     });
   }
 
-  Future<Either<Failure, UserModel>> updateProfile(int id, BodyMap body) async {
+  Future<Either<Failure, UserModel>> updateProfile(int id, BodyMap body, {File? image}) async {
     return wrapHandling(tryCall: () async {
-      return await datasource.updateProfile(id, body);
+      return await datasource.updateProfile(id, body, image: image);
     });
   }
 

@@ -22,6 +22,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.getAllCategoriesUsecase,
     this.getAllBooksUsecase,
   ) : super(HomeState()) {
+
+
+
     on<GetHomeCategoriesEvent>((event, emit) async {
       emit(state.copyWith(categoriesStatus: RequestStatus.loading));
       final result = await getAllCategoriesUsecase.call(NoParams());

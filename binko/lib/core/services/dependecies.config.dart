@@ -24,6 +24,8 @@ import '../../features/book/domain/usecases/get_all_books_usecase.dart'
     as _i140;
 import '../../features/book/domain/usecases/get_book_chapters_usecase.dart'
     as _i371;
+import '../../features/book/domain/usecases/get_books_by_category_usecase.dart'
+    as _i1054;
 import '../../features/book/domain/usecases/get_comments_usecase.dart' as _i775;
 import '../../features/book/domain/usecases/get_my_book_usecase.dart' as _i68;
 import '../../features/book/domain/usecases/get_replies_usecase.dart' as _i331;
@@ -65,6 +67,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i469.ProfileBloc>(() => _i469.ProfileBloc());
     gh.factory<_i125.BooksRepo>(() =>
         _i446.BooksRepoImpl(datasource: gh<_i1028.RemoteBookDatasource>()));
+    gh.lazySingleton<_i1054.GetBooksByCategoryUsecase>(
+        () => _i1054.GetBooksByCategoryUsecase(gh<_i125.BooksRepo>()));
     gh.factory<_i250.AddReplyUsecase>(
         () => _i250.AddReplyUsecase(gh<_i125.BooksRepo>()));
     gh.factory<_i331.GetRepliesUsecase>(
@@ -83,7 +87,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i371.GetBookChaptersUsecase(repo: gh<_i125.BooksRepo>()));
     gh.factory<_i68.GetMyBooksUsecase>(
         () => _i68.GetMyBooksUsecase(repo: gh<_i125.BooksRepo>()));
+    gh.factory<_i471.CategoriesRepository>(() => _i175.CategoriesRepoImpl(
+        datasource: gh<_i276.RemoteCategoryDatasource>()));
     gh.lazySingleton<_i86.BookBloc>(() => _i86.BookBloc(
+          gh<_i1054.GetBooksByCategoryUsecase>(),
           gh<_i76.AddCommentUsecase>(),
           gh<_i775.GetCommentsUsecase>(),
           gh<_i742.AddChapterUseCase>(),
@@ -94,8 +101,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i331.GetRepliesUsecase>(),
           gh<_i250.AddReplyUsecase>(),
         ));
-    gh.factory<_i471.CategoriesRepository>(() => _i175.CategoriesRepoImpl(
-        datasource: gh<_i276.RemoteCategoryDatasource>()));
     gh.factory<_i908.AddCategoryUsecase>(
         () => _i908.AddCategoryUsecase(gh<_i471.CategoriesRepository>()));
     gh.factory<_i273.GetAllCategoriesUsecase>(() =>
